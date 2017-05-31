@@ -122,4 +122,32 @@ function init(app, User, randomString){
         });
     });
 
+    app.post("/auth/local/login", function(req, res){
+         console.log("User Login : " + req.param('email'));
+        User.findOne({email : req.param('email')}, function (err, result) {
+            console.log("DB Founded : "+ result);
+            if(err){
+                console.log("/auth/local/login failed");
+                res.send(403, "/auth/local/login DB Error");
+            }
+            if(result) {
+                if (req.param('email') == undefined) {
+                    console.log("Unvalid User Infomation");
+                    res.send(401, "Unvalid User Infomation");
+                }
+                else if (req.param('email') != undefined && result.password == req.param('password')) {
+                    console.log("User " + result.name + "Logged In");
+                    res.send(200, response);
+                }
+                else if (result.password != req.param('password')) {
+                    console.log("Password Error!");
+                    res.send(401, "Access Denied");
+                }
+            }
+            else{
+                console.log("Can't Find User Data");
+                res.send(404, "Cant't Find User Data");
+            }
+        });
+    })
 }
