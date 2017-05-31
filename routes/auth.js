@@ -110,5 +110,16 @@ function init(app, User, randomString){
         }));
     });
 
-    app.post("")
+    app.post("/auth/loca/authenticate", function(req, res){
+        console.log('Auth Key : '+ req.param('token'));
+        User.findOne({authTokne : req.param('token')}, function(err, result){
+            if(err){
+                console.log("/auth/authenticate failed");
+                res.send(404, "Cannnot Auth User");
+            }
+            console.log("User "+ result + "Logged In");
+            res.send(200, result);
+        });
+    });
+
 }
