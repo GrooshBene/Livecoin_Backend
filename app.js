@@ -10,7 +10,6 @@ var schema = mongoose.Schema;
 
 var index = require('./routes/index');
 var users = require('./routes/users');
-require('./routes/auth.js')
 
 var app = express();
 
@@ -39,6 +38,10 @@ var User = mongoose.model('users', UserSchema);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+
+//Load Modules
+require('./routes/auth.js')(app, User);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
