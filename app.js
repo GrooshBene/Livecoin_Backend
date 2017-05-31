@@ -24,6 +24,7 @@ var UserSchema = new schema({
   alertSound : String,
   refreshType : Number,
   refreshRate : Number,
+  authToken : String
 });
 
 mongoose.connect("mongodb://localhost:27017/livecoin", function(err){

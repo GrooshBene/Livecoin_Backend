@@ -33,7 +33,8 @@ function init(app, User, randomString){
                     alertType : 0,
                     alertSound : "Basic",
                     refreshType : 0,
-                    refreshRate : 0
+                    refreshRate : 0,
+                    authToken : ""
                 });
                 user.save(function(err){
                     if(err){
@@ -73,7 +74,41 @@ function init(app, User, randomString){
 
     app.post('/auth/local/register', function(req, res){
         user = new User({
-            _id : randomString, 
-        })
-    })
+            _id : randomString.generate(13),
+            firstName : req.param('firstName'),
+            lastName : req.param('lastName'),
+            email : req.param('email'),
+            password : req.param('password'),
+            nickname : req.param('nickname'),
+            alertType : 0,
+             alertSound : "Basic",
+            refreshType : 0,
+            refreshRate : 0,
+            authToken : randomString.generate(15)
+        });
+        User.find({email : req.param('email')}.exec(function(err, result){
+            if(err){
+                console.log('/auth/local/register DB Error');
+                res.send(403, "/auth/loca/register DB Error");
+            }
+            if(result.length != 0){
+                console.log("User Data Exists!");
+                res.send(401, "User Data Exists!");
+            }
+            else if(result.length == 0){
+                user.save(function(err){
+                    if(err){
+                        console.log("/auth/local/register Failed");
+                        res.send(403, "/auth/local/register DB Error");
+                    }
+                    else{
+                        console.log("User Added : " + user);
+                        res.send(200, user);
+                    }
+                });
+            }
+        }));
+    });
+
+    app.post("")
 }
