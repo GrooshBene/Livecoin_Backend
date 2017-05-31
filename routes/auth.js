@@ -81,7 +81,7 @@ function init(app, User, randomString){
             password : req.param('password'),
             nickname : req.param('nickname'),
             alertType : 0,
-             alertSound : "Basic",
+            alertSound : "Basic",
             refreshType : 0,
             refreshRate : 0,
             authToken : randomString.generate(15)
@@ -112,7 +112,7 @@ function init(app, User, randomString){
 
     app.post("/auth/loca/authenticate", function(req, res){
         console.log('Auth Key : '+ req.param('token'));
-        User.findOne({authTokne : req.param('token')}, function(err, result){
+        User.findOne({authToken : req.param('token')}, function(err, result){
             if(err){
                 console.log("/auth/authenticate failed");
                 res.send(404, "Cannnot Auth User");
