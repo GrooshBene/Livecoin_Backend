@@ -150,4 +150,14 @@ function init(app, User, randomString){
             }
         });
     })
+
+    app.post('/auth/logout', function(req, res){
+        req.session.destroy(function (err){
+            if(err){
+                console.log("/auth/logout session destroy error");
+                res.send(403, "/auth/logout session destroy error");
+            }
+            res.send(200, "Logout Successfully");
+        });
+    });
 }
