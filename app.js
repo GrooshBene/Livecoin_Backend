@@ -41,7 +41,7 @@ app.set('view engine', 'jade');
 
 
 //Load Modules
-require('./routes/auth.js')(app, User);
+require('./routes/auth.js')(app, User, randomString);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

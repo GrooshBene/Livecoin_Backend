@@ -1,5 +1,5 @@
 module.exports = init;
-function init(app, User){
+function init(app, User, randomString){
     var passport = require('passport');
     var FacebookTkenStrategy = require('passport-facebook-token');
     app.use(passport.initialize());
@@ -70,4 +70,10 @@ function init(app, User){
         successRedirect : "/",
         failureRedirect : "/"
     }));
+
+    app.post('/auth/local/register', function(req, res){
+        user = new User({
+            _id : randomString, 
+        })
+    })
 }
