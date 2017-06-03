@@ -34,7 +34,10 @@ function init(app, User, randomString){
                     alertSound : "Basic",
                     refreshType : 0,
                     refreshRate : 0,
-                    authToken : ""
+                    authToken : "",
+                    verifyingToken : "",
+                    favorite : [],
+                    scrap : []
                 });
                 user.save(function(err){
                     if(err){
@@ -84,7 +87,10 @@ function init(app, User, randomString){
             alertSound : "Basic",
             refreshType : 0,
             refreshRate : 0,
-            authToken : randomString.generate(15)
+            authToken : randomString.generate(15),
+            verifyingToken : randomString.generate(6),
+            favorite : [],
+            scrap : []
         });
         User.find({email : req.param('email')}.exec(function(err, result){
             if(err){
