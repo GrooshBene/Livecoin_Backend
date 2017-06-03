@@ -28,11 +28,11 @@ var UserSchema = new schema({
   verifyingToken : String,
   favorite : [{
     type : String,
-    ref : 'coin'
+    ref : 'coins'
   }],
   scrap : [{
     type : String,
-    ref : 'text'
+    ref : 'texts'
   }],
 });
 
@@ -54,6 +54,10 @@ var CoinSchema = new schema({
   volume : String,
   dailyLow : String,
   dailyHigh : String,
+  comments : [{
+    type : String,
+    ref : 'texts'
+  }],
   change : String
 });
 
@@ -66,6 +70,8 @@ mongoose.connect("mongodb://localhost:27017/livecoin", function(err){
 });
 
 var User = mongoose.model('users', UserSchema);
+var Text = mongoose.model('texts', TextSchema);
+var Coin = mongoose.model('coins', CoinSchema);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
