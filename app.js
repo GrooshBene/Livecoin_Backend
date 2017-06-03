@@ -24,8 +24,39 @@ var UserSchema = new schema({
   alertSound : String,
   refreshType : Number,
   refreshRate : Number,
-  authToken : String
+  authToken : String,
+  verifyingToken : String,
+  favorite : [{
+    type : String,
+    ref : 'coin'
+  }],
+  scrap : [{
+    type : String,
+    ref : 'text'
+  }],
 });
+
+var TextSchema = new schema({
+  _id : String,
+  writer : {
+    type : String,
+    ref : 'users'
+  },
+  like : Number,
+  content : String
+});
+
+var CoinSchema = new schema({
+  _id : String,
+  name : String,
+  company : String,
+  price : String,
+  volume : String,
+  dailyLow : String,
+  dailyHigh : String,
+  change : String
+});
+
 
 mongoose.connect("mongodb://localhost:27017/livecoin", function(err){
   if(err){
