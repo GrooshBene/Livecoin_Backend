@@ -54,6 +54,8 @@ var CoinSchema = new schema({
   volume : String,
   dailyLow : String,
   dailyHigh : String,
+  like : Number,
+  dislike : Number,
   comments : [{
     type : String,
     ref : 'texts'
@@ -66,7 +68,7 @@ mongoose.connect("mongodb://localhost:27017/livecoin", function(err){
   if(err){
     throw err;
   }
-  console.log("DB Server Start Success!");
+  console.log("DB Server Connect Success!");
 });
 
 var User = mongoose.model('users', UserSchema);
@@ -81,7 +83,7 @@ app.set('view engine', 'jade');
 //Load Modules
 require('./routes/auth.js')(app, User, randomString);
 require('./routes/coin.js')(app, Coin, Text, randomString);
-require('./routes/comment.js')(app, User, Text);
+require('./routes/comment.js')(app, User, Text, randomString);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
