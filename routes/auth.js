@@ -1,7 +1,7 @@
 module.exports = init;
 function init(app, User, randomString){
     var passport = require('passport');
-    var FacebookTkenStrategy = require('passport-facebook-token');
+    var FacebookTokenStrategy = require('passport-facebook-token');
     app.use(passport.initialize());
     app.use(passport.session());
     passport.serializeUser(function(user, done){
@@ -11,9 +11,9 @@ function init(app, User, randomString){
         done(null, obj);
     });
 
-    passport.use(FacebookTkenStrategy({
-        clientID : "",
-        clientSecret : ""
+    passport.use(new FacebookTokenStrategy({
+        clientID : "asdf",
+        clientSecret : "asdf"
     }, function(accessToken, refreshToken, profile, done){
         console.log(profile);
         User.findOne({
