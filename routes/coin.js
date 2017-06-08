@@ -6,14 +6,51 @@ function init(app, Coin, randomString){
             if(err){
                 throw err;
             }
-            console.log(ticker);
+            var temp_array = Object.keys(ticker);
+            for (i=0; i<temp_array.length; i++){
+                var coin = new Coin({
+                    _id : randomString.generate(13),
+                    name : temp_array[i],
+                    company : "Poloniex",
+                    price : ticker[temp_array[i]].last,
+                    volume : ticker[temp_array[i]].baseVolume,
+                    dailyLow : ticker[temp_array[i]].low24hr,
+                    dailyHigh : ticker[temp_array[i]].high24hr,
+                    like : 0,
+                    dislike : 0,
+                    comments : [],
+                    change : ticker[temp_array[i]].percentChange
+                });
+
+                coin.save(function(err){
+                    if(err){
+                        console.log("Coin Data Setting Error!");
+                        throw err;
+                    }
+                    console.log("Coin "+ temp_array[i].id + " Saved!");
+                });
+            }
         });
     setInterval(function(){
         poloniex.returnTicker(function(err, ticker){
             if(err){
                 throw err;
             }
-            console.log(ticker);
+            var temp_array = Object.keys(ticker);
+            Coin.findOneAndUpdate({name : temp_array},
+            {
+                price : ticker[temp_array[i].last],
+                volume : ticker[temp_array[i]].baseVolume,
+                dailyLow : ticker[temp_array[i]].low24hr,
+                dailyHigh : ticker[temp_array[i]].high24hr,
+                change : ticker[temp_array[i]].percentChange
+            }).exec(function(err, result){
+                if(err){
+                    console.log("Coin Data Updating Error!");
+                    throw err;
+                }
+                console.log("Coin "+temp_array[i].id + " Saved!");
+            });
         });
     }, 10000);
     app.post('/coin/like', function(req, res){
