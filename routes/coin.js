@@ -8,6 +8,7 @@ function init(app, Coin, randomString){
             }
             var temp_array = Object.keys(ticker);
             for (i=0; i<temp_array.length; i++){
+                console.log(ticker[temp_array[i]].id);
                 var coin = new Coin({
                     _id : randomString.generate(13),
                     name : temp_array[i],
@@ -27,7 +28,8 @@ function init(app, Coin, randomString){
                         console.log("Coin Data Setting Error!");
                         throw err;
                     }
-                    console.log("Coin "+ temp_array[i].id + " Saved!");
+                    console.log(coin.name);
+                    // console.log("Coin "+ ticker[temp_array[i]].id + " Saved!");
                 });
             }
         });
@@ -37,20 +39,22 @@ function init(app, Coin, randomString){
                 throw err;
             }
             var temp_array = Object.keys(ticker);
-            Coin.findOneAndUpdate({name : temp_array},
+            for (i=0; i<temp_array.length; i++){
+                Coin.findOneAndUpdate({name : temp_array},
             {
                 price : ticker[temp_array[i].last],
                 volume : ticker[temp_array[i]].baseVolume,
                 dailyLow : ticker[temp_array[i]].low24hr,
                 dailyHigh : ticker[temp_array[i]].high24hr,
                 change : ticker[temp_array[i]].percentChange
-            }).exec(function(err, result){
+        }).exec(function(err, result){
                 if(err){
                     console.log("Coin Data Updating Error!");
                     throw err;
                 }
-                console.log("Coin "+temp_array[i].id + " Saved!");
-            });
+                console.log("Coin "+ticker[temp_array[i]].id + " Updated!");
+        });
+            }
         });
     }, 10000);
     app.post('/coin/like', function(req, res){

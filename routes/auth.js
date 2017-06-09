@@ -116,7 +116,7 @@ function init(app, User, randomString){
         }));
     });
 
-    app.post("/auth/loca/authenticate", function(req, res){
+    app.post("/auth/local/authenticate", function(req, res){
         console.log('Auth Key : '+ req.param('token'));
         User.findOne({authToken : req.param('token')}, function(err, result){
             if(err){
