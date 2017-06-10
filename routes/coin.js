@@ -58,13 +58,13 @@ function init(app, Coin, randomString){
         });
     }, 10000);
     app.post('/coin/like', function(req, res){
-        Coin.find({id : req.param('id')}, function(err, result){
+        Coin.findOneAndUpdate({id : req.param('id')}, function(err, result){
             
         });
     });
 
     app.post('/coin/dislike', function(req, res){
-        Coin.find({id : req.param('id')}, function(err, result){
+        Coin.findOneAndUpdate({id : req.param('id')}, function(err, result){
 
         });
     });
