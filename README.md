@@ -182,6 +182,26 @@ LiveCoin Backend Server
 
         Cannot Find User Data : Http Code 404
 
+> /auth/local/register/mail : Local Database Register Email Authenticate
+
+>> Requiring Params
+
+    email : User email
+
+    token : User Email Verifying Token
+
+>> Returning Values
+
+    >>> On Success
+
+        HTTP Code 200, User Schema
+
+    >>> On Failure
+
+        DB Error : HTTP Code 403
+
+        Unmatched Token : HTTP Code 404
+
 > /coin/like : Coin Schema Like Activity
 
 >> Requiring Params

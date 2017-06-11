@@ -166,7 +166,7 @@ function init(app, User, randomString){
         }));
     });
 
-    app.post('/auth/register/mail', function(req, res){
+    app.post('/auth/local/register/mail', function(req, res){
         User.findOne({email : req.param('email'), function(err, result) {
             if(err){
                 console.log('/auth/register/mail DB Error');
