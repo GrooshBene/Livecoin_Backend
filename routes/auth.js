@@ -138,7 +138,7 @@ function init(app, User, randomString){
             refreshType : 0,
             refreshRate : 0,
             authToken : randomString.generate(15),
-            verifyingToken : randomString.generate(6),
+            verifyingToken : mail_auth(req.param('email'), 'wltn9247', 'wltn6705'),
             favorite : [],
             scrap : []
         });
@@ -165,6 +165,23 @@ function init(app, User, randomString){
             }
         }));
     });
+
+    app.post('/auth/register/mail', function(req, res){
+        User.findOne({email : req.param('email'), function(err, result) {
+            if(err){
+                console.log('/auth/register/mail DB Error');
+                res.send(403, "/auth/register/mail DB Error");
+            }
+            if(result.verifyingToken == req.param('token')){
+                console.log('User '+ result + " Veryfied!");
+                res.send(200, result);
+            }
+            else if(result.verifyingToken != req.param('token')){
+                console.log("User "+ result + " Veryfing Failed!");
+                res.send(404, "Unmatched token");
+            }
+        }})
+    })
 
     app.post("/auth/local/authenticate", function(req, res){
         console.log('Auth Key : '+ req.param('token'));
@@ -206,8 +223,6 @@ function init(app, User, randomString){
             }
         });
     })
-
-    app.post('')
 
     app.post('/auth/logout', function(req, res){
         req.session.destroy(function (err){
