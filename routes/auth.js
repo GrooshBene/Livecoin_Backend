@@ -1,6 +1,56 @@
 module.exports = init;
 function init(app, User, randomString){
     var passport = require('passport');
+    var mailer = require('nodemailer');
+
+    function mail_auth(reciever, id, password){
+        var token = randomString.generate(16);
+        var smtpTransport = mailer.createTransport("SMTP", {
+            service : "Gmail",
+            auth : {
+                user : id,
+                pass : password
+            }
+        });
+        var mailOptions = {
+            from : '회원가입 <LiveCoin>',
+            to : receiver,
+            subject : "LiveCoin 회원가입 인증 메일입니다.",
+            text : token + " 을 이용하여 인증 부탁드립니다."
+        }
+        smtpTransport.sendMail(mailOptions, function(err, result){
+            if(err){
+                console.log("mail_auth error");
+                throw err;
+            }
+            console.log("Mail sended : " +result);
+        });
+
+        return token;
+    }
+    function mail_send(reciever, id, password, content){
+        var smtpTransport = mailer.createTransport("SMTP", {
+            service : "Gmail",
+            auth : {
+                user : id,
+                pass : password
+            }
+        });
+        var mailOptions = {
+            from : "아이디/비밀번호 복구 <LiveCoin>",
+            to : reciever,
+            subject : 'LiveCoin 아이디/비밀번호 인증 메일입니다',
+            text : content
+        }
+        smtpTransport.sendMail(mailOptions, function(err, result){
+            if(err){
+                console.log("mail_send error");
+                throw err;
+            }
+            console.log("Mail Sended : " + result);
+        });
+    }
+
     var FacebookTokenStrategy = require('passport-facebook-token');
     app.use(passport.initialize());
     app.use(passport.session());
@@ -156,6 +206,8 @@ function init(app, User, randomString){
             }
         });
     })
+
+    app.post('')
 
     app.post('/auth/logout', function(req, res){
         req.session.destroy(function (err){
