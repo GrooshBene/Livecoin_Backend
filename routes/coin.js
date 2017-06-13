@@ -2,6 +2,20 @@ module.exports = init;
 function init(app, Coin, randomString){
     var poloniex_api = require('poloniex-api-node');
     var poloniex = new poloniex_api('KIR1UZCY-AZ8K2TET-BCGD5C6W-HQ4KU5A4','824a2e3e1b276079ea3f625609f033f0dd92104f7fac0b797ea01874827793e20d50d435dc87e4ef7ce878b3b99f70c33b0a4b355ad91bc64fe48bf8147f7213');
+    var BFX = require('bitfinex-api-node');
+    var bfx_opts = {
+        version : 2,
+        transform : true
+    }
+    var bws = new BFX("R6lTOMl9RZBwQp6ERDLDioyNphYNc51YUqR7kDMvNJb", "34r9YdMXYD0zoMIjWavMQfXLUJ3CfznazcpjLcXhMht", bfx_opts).ws;
+    bws.on('open', function(){
+        bws.subscribeTicker('BTCUSD');
+        bws.subscribeOrderBook('BTCUSD');
+        bws.subscribeTrades('BTCUSD');
+    });
+    bws.on('ticker', function(pair, ticker){
+        console.log('Ticker : ' + ticker);
+    });
     poloniex.returnTicker(function(err, ticker){
             if(err){
                 throw err;
@@ -69,4 +83,7 @@ function init(app, Coin, randomString){
         });
     });
 
+    //bitfinex 
+    //id : R6lTOMl9RZBwQp6ERDLDioyNphYNc51YUqR7kDMvNJb
+    //secret : 34r9YdMXYD0zoMIjWavMQfXLUJ3CfznazcpjLcXhMht
 }
