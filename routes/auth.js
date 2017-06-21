@@ -2,6 +2,7 @@ module.exports = init;
 function init(app, User, randomString){
     var passport = require('passport');
     var mailer = require('nodemailer');
+    //asdf
 
     // function mail_auth(reciever, id, password){
     //     var token = randomString.generate(16);
