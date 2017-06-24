@@ -49,10 +49,16 @@ function init(app, User, Text, randomString, Coin){
     });
 
     app.post('/comment/:id/scrap', function(req, res){
-
+        User.findOneAndUpdate({_id : req.param('user_id')}, {$push : {scrap : req.param(id)}}, function(req,res){
+            if(err){
+                console.log('/comment/:id/scrap Update DB Error');
+                res.send(401, '/comment/:id/scrap Update DB Error');
+            }
+            res.send(200, result);
+        });
     });
 
     app.post('/comment/:id/report', function(req, res){
-
+        
     });
 }
