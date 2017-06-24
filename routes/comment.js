@@ -1,6 +1,25 @@
 module.exports = init;
-function init(app, User, Text, randomString){
+function init(app, User, Text, randomString, Coin){
     app.post('/comment/add', function(req, res){
+        var text = new Text({
+            _id : randomString.generate(13),
+            writer : req.param('id'),
+            like : 0,
+            content : req.param('content')
+        });
+        Coin.findOneAndUpdate({id : req.param('id')}, {$push : {comments : text._id}}, function(err, result){
+            if(err){
+                console.log('/comment/add Coin Update Error');
+                res.send(401, '/comment/add Coin Update Error');
+            }
+        });
+        text.save(function(err){
+            if(err){
+                console.log('/comment/add Save Error');
+                res.send(401, '/comment/add Save Error');
+            }
+            res.send(200, text);
+        });
 
     });
 
