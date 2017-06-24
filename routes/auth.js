@@ -1,7 +1,7 @@
 module.exports = init;
 function init(app, User, randomString){
     var passport = require('passport');
-    var mailer = require('nodemailer');
+    // var mailer = require('nodemailer');
     //asdf
 
     // function mail_auth(reciever, id, password){
@@ -63,8 +63,8 @@ function init(app, User, randomString){
     });
 
     passport.use(new FacebookTokenStrategy({
-        clientID : "asdf",
-        clientSecret : "asdf"
+        clientID : "247151832435976",
+        clientSecret : "62585d23d288396ee3de224af2e0d34f"
     }, function(accessToken, refreshToken, profile, done){
         console.log(profile);
         User.findOne({
