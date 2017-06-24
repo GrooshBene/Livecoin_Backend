@@ -24,7 +24,14 @@ function init(app, User, Text, randomString, Coin){
     });
 
     app.post('/comment/:company/:coin', function(req, res){
-
+        Coin.findOne({company : req.param('company'), name : req.param('name')}, function(err, result){
+            if(err){
+                console.log('/comment/:company/:coin Find DB Error');
+                res.send(401, '/comment/:company/:coin Find Error');
+            }
+            console.log(result.comments);
+            res.send(200, result.comments);
+        });
     });
 
     app.post('/comment/:id/block', function(req, res){
