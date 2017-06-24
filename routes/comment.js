@@ -35,11 +35,17 @@ function init(app, User, Text, randomString, Coin){
     });
 
     app.post('/comment/:id/block', function(req, res){
-
+        
     });
 
     app.post('/comment/:id/like', function(req, res){
-
+        Coin.findOneAndUpdate({_id : req.param('id')}, {$inc : {like : 1}}, function(req, res){
+            if(err){
+                console.log('/comment/:id/like Update DB Error');
+                res.send(401, '/comment/:id/:like Update Error');
+            }
+            res.send(200, result);
+        });
     });
 
     app.post('/comment/:id/scrap', function(req, res){
