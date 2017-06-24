@@ -72,14 +72,24 @@ function init(app, Coin, randomString){
         });
     }, 10000);
     app.post('/coin/like', function(req, res){
-        Coin.findOneAndUpdate({id : req.param('id')}, function(err, result){
-            
+        Coin.findOneAndUpdate({id : req.param('id')}, {$inc : {like : 1}}, function(err, result){
+            if(err){
+                console.log("/coin/like failed");
+                res.send(401, result);
+                throw err;
+            }
+            res.send(200, result);
         });
     });
 
     app.post('/coin/dislike', function(req, res){
-        Coin.findOneAndUpdate({id : req.param('id')}, function(err, result){
-
+        Coin.findOneAndUpdate({id : req.param('id')}, {$inc : {like :1}}, function(err, result){
+            if(err){
+                console.log("/coin/dislike failed");
+                res.send(401, result);
+                throw err;
+            }
+            res.send(200, result);
         });
     });
 
