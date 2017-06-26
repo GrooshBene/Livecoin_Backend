@@ -35,7 +35,7 @@ function init(app, User, Text, randomString, Coin){
     });
 
     app.post('/comment/:id/block', function(req, res){
-        
+        //adminpage
     });
 
     app.post('/comment/:id/like', function(req, res){
@@ -59,6 +59,6 @@ function init(app, User, Text, randomString, Coin){
     });
 
     app.post('/comment/:id/report', function(req, res){
-        
+        //adminpage
     });
 }
