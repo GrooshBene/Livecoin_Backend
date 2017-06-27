@@ -34,6 +34,7 @@ var UserSchema = new schema({
     type : String,
     ref : 'texts'
   }],
+  emailVeryfied : Number
 });
 
 var TextSchema = new schema({

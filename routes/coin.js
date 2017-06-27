@@ -17,6 +17,7 @@ function init(app, Coin, randomString){
         console.log('Ticker : ' + ticker);
     });
     poloniex.returnTicker(function(err, ticker){
+        //needs Promise
             if(err){
                 throw err;  
             }

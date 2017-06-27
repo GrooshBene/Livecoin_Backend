@@ -88,7 +88,8 @@ function init(app, User, randomString){
                     authToken : "",
                     verifyingToken : "",
                     favorite : [],
-                    scrap : []
+                    scrap : [],
+                    emailVeryfied : 1
                 });
                 user.save(function(err){
                     if(err){
@@ -141,7 +142,8 @@ function init(app, User, randomString){
             authToken : randomString.generate(15),
             verifyingToken : /*mail_auth(req.param('email'), 'wltn9247', 'wltn6705')*/'',
             favorite : [],
-            scrap : []
+            scrap : [],
+            emailVeryfied : 0
         });
         User.find({email : req.param('email')}.exec(function(err, result){
             if(err){
@@ -175,6 +177,12 @@ function init(app, User, randomString){
             }
             if(result.verifyingToken == req.param('token')){
                 console.log('User '+ result + " Veryfied!");
+                User.findOneAndUpdate({email : result._id}, {emailVeryfied : 1}, function(err, result){
+                    if(err){
+                        console.log('/auth/register/mail DB Updating Error');
+                        res.send(403, "/auth/register/mail DB Updating Error");
+                    }
+                });
                 res.send(200, result);
             }
             else if(result.verifyingToken != req.param('token')){
@@ -216,6 +224,10 @@ function init(app, User, randomString){
                 else if (result.password != req.param('password')) {
                     console.log("Password Error!");
                     res.send(401, "Access Denied");
+                }
+                else if(result.emailVeryfied == 0){
+                    console.log("Unverified User");
+                    res.send(406, "Unverified User");
                 }
             }
             else{
