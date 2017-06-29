@@ -3,6 +3,8 @@ function init(app, Coin, randomString){
     var poloniex_api = require('poloniex-api-node');
     var poloniex = new poloniex_api('KIR1UZCY-AZ8K2TET-BCGD5C6W-HQ4KU5A4','824a2e3e1b276079ea3f625609f033f0dd92104f7fac0b797ea01874827793e20d50d435dc87e4ef7ce878b3b99f70c33b0a4b355ad91bc64fe48bf8147f7213');
     var BFX = require('bitfinex-api-node');
+    var KrakenCLient = require('kraken-api');
+    var kraken = new KrakenCLient('Lynpj91IB1SkuXqQfdlR/1r9/7FFPB15jBQquJdGJH3UO9ym3hQVx0TV', 'OYV6yFhXlTFoaNjysv3eswOVDXuOIpihPiTKPWIL7O+/4RqBeW6Q51qj/+9jMi3/H/oCDMAIN+bjUJpKire7dg==');
     var bfx_opts = {
         version : 2,
         transform : true
@@ -16,6 +18,13 @@ function init(app, Coin, randomString){
     bws.on('ticker', function(pair, ticker){
         console.log('Ticker : ' + ticker);
     });
+    kraken.api('Ticker', {"pair": 'XBTCXLTC'}, function(err, data){
+        if(err){
+            console.log(err);
+            throw err;
+        }
+        console.log(data.result);
+    })
     poloniex.returnTicker(function(err, ticker){
         //needs Promise
             if(err){
@@ -67,7 +76,7 @@ function init(app, Coin, randomString){
                     console.log("Coin Data Updating Error!");
                     throw err;
                 }
-                console.log("Coin "+ticker[temp_array[i]].id + " Updated!");
+                //console.log("Coin "+ticker[temp_array[i]].id + " Updated!");
         });
             }
         });
