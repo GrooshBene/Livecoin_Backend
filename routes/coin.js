@@ -29,7 +29,7 @@ function init(app, Coin, randomString){
         //needs Promise
             if(err){
                 throw err;  
-            }
+             }
             var temp_array = Object.keys(ticker);
             for (i=0; i<temp_array.length; i++){
                 console.log(ticker[temp_array[i]].id);
@@ -53,9 +53,9 @@ function init(app, Coin, randomString){
                         throw err;
                     }
                     console.log(coin.name);
-                    // console.log("Coin "+ ticker[temp_array[i]].id + " Saved!");
+                    // console.log("Coin "+ ticker[temp_array[i]x].id + " Saved!");
                 });
-            } 
+            }
         });
     setInterval(function(){
         poloniex.returnTicker(function(err, ticker){

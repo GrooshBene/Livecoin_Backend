@@ -1,6 +1,9 @@
 module.exports = init;
 function init(app, User, randomString){
     var passport = require('passport');
+    var FCM = require('fcm-node');
+    var serverKey = 'AAAAVBxXaUE:APA91bE81zytT0yAbdDThAeruMFe8eMkfH1-XSs1gyt_ugYIOvsQDW0FoRenMqPYBTCx2ttgY24az69Mh9fOjGzA70TsDon5YawSsUfqIq0ef2l55b276x28xDXEfmwV8HC7H6Ieao6h'
+    var fcm = new FCM(serverKey);
     // var mailer = require('nodemailer');
     //asdf
 
@@ -105,6 +108,26 @@ function init(app, User, randomString){
             }
         });
     }));
+
+    app.get('/auth/test', function(req, res){
+         var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera) 
+            to: req.param('fcm_token'), 
+            priority : 'high',
+            notification: {
+                title: 'Test', 
+                body: 'Test' 
+            }
+        };
+        fcm.send(message, function(err, result){
+            if(err){
+                console.log('FCM Message Error');
+            }
+            else{
+                console.log('FCM Sended : ' + result);
+            }
+        })
+        
+    });
 
     app.get('/auth/facebook/token', passport.authenticate('facebook-token'), function(req, res){
         // console.log("User Token : "+ req.param('access_token'));
@@ -226,7 +249,7 @@ function init(app, User, randomString){
                     res.send(401, "Access Denied");
                 }
                 else if(result.emailVeryfied == 0){
-                    console.log("Unverified User");
+                    console.log("Unverified  User");
                     res.send(406, "Unverified User");
                 }
             }
