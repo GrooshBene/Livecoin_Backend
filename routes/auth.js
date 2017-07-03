@@ -65,46 +65,6 @@ function init(app, User, randomString){
         done(null, obj);
     });
 
-    passport.use(new TwitterTokenStrategy({
-        clientID: "",
-        clientSecret : "",
-    }, function(accessToken, refreshToken, profile, done){
-        console.log(profile);
-        User.findOne({
-            _id : profile.id
-        }, function(err, user){
-            if(err){
-                return done(err);
-            }
-            if(!user){
-                user = new User({
-                    _id : profile.id,
-                    firstName : profile.name[1],
-                    lastName : profile.name[0],
-                    email : profile.email,
-                    nickname : profile.username,
-                    password : "null",
-                    alertType : 0,
-                    alertSound : "Basic",
-                    refreshType : 0,
-                    refreshRate : 0,
-                    authToken : "",
-                    verifyingToken : "",
-                    favorite : [],
-                    scrap : [],
-                    emailVeryfied : 1
-                });
-                user.save(function(err){
-                    if(err){
-                        console.log(err);
-                    }
-                    else{
-                        done(null, profile);
-                    }
-                });
-            }
-        });
-
     passport.use(new FacebookTokenStrategy({
         clientID : "247151832435976",
         clientSecret : "62585d23d288396ee3de224af2e0d34f"
@@ -186,11 +146,6 @@ function init(app, User, randomString){
     });
 
     app.get('/auth/facebook/callback', passport.authenticate('facebook-token', {
-        successRedirect : "/",
-        failureRedirect : "/"
-    }));
-
-    app.get('/auth/twitter/callback', passport.authenticate('twitter-token', {
         successRedirect : "/",
         failureRedirect : "/"
     }));
