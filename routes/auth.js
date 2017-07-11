@@ -219,7 +219,7 @@ function init(app, User, randomString){
         console.log('Auth Key : '+ req.param('token'));
         User.findOne({authToken : req.param('token')}, function(err, result){
             if(err){
-                console.log("/auth/authenticate failed");
+                console.log("/auth/authenicate failed");
                 res.send(404, "Cannnot Auth User");
             }
             console.log("User "+ result + "Logged In");

@@ -91,7 +91,7 @@ function init(app, Coin, randomString){
             res.send(200, result);
         });
     });
-
+    
     app.post('/coin/dislike', function(req, res){
         Coin.findOneAndUpdate({id : req.param('id')}, {$inc : {like :1}}, function(err, result){
             if(err){
