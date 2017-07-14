@@ -16,15 +16,17 @@ function init(app, Coin, randomString){
         bws.subscribeTrades('BTCUSD');
     });
     bws.on('ticker', function(pair, ticker){
-        console.log('Ticker : ' + ticker);
+        str = JSON.stringify(ticker);
+        str = JSON.stringify(ticker, null, 4);
+        console.log('Ticker : ' + str);
     });
-    kraken.api('Ticker', {"pair": 'XBTCXLTC'}, function(err, data){
-        if(err){
-            console.log(err);
-            throw err;
-        }
-        console.log(data.result);
-    })
+    // kraken.api('Ticker', {"pair": 'XBTCXLTC'}, function(err, data){
+    //     if(err){
+    //         console.log(err);
+    //         throw err;
+    //     }
+    //     console.log(data.result);
+    // })
     poloniex.returnTicker(function(err, ticker){
         //needs Promise
             if(err){
@@ -60,13 +62,13 @@ function init(app, Coin, randomString){
     setInterval(function(){
         poloniex.returnTicker(function(err, ticker){
             if(err){
-                throw err;
+                console.log(err);
             }
             var temp_array = Object.keys(ticker);
             for (i=0; i<temp_array.length; i++){
                 Coin.findOneAndUpdate({name : temp_array},
             {
-                price : ticker[temp_array[i].last],
+                price : ticker[temp_array[i]].last,
                 volume : ticker[temp_array[i]].baseVolume,
                 dailyLow : ticker[temp_array[i]].low24hr,
                 dailyHigh : ticker[temp_array[i]].high24hr,
@@ -81,12 +83,30 @@ function init(app, Coin, randomString){
             }
         });
     }, 10000);
+    app.post('/coin/find/:companyName', function(req, res){
+        Coin.find({company : req.param('companyName')}, function(err, result){
+            if(err){
+                console.log('/coin/find/:companyName failed');
+                res.send(401, err);
+            }
+            res.send(200, result);
+        })
+    })
     app.post('/coin/like', function(req, res){
         Coin.findOneAndUpdate({id : req.param('id')}, {$inc : {like : 1}}, function(err, result){
             if(err){
                 console.log("/coin/like failed");
-                res.send(401, result);
-                throw err;
+                res.send(401, err);
+            }
+            res.send(200, result);
+        });
+    });
+
+    app.post('/coin/like', function(req, res){
+        Coin.findOneAndUpdate({id : req.param('id')}, {$inc : {like : 1}}, function(err, result){
+            if(err){
+                console.log('/coin/dislike failed');
+                res.send(401, err);
             }
             res.send(200, result);
         });
