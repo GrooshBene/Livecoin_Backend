@@ -92,6 +92,15 @@ function init(app, Coin, randomString){
             res.send(200, result);
         })
     })
+	app.post('/coin/find/:companyName/:coinName', function(req, res){
+		Coin.find({company : req.param('companyName'), name : req.param('coinName')}, function(err, result){
+			if(err){
+				console.log('/coin/find/:companyName failed');
+				res.send(401, err);
+			}
+			res.send(200, result);
+		})
+	});
     app.post('/coin/like', function(req, res){
         Coin.findOneAndUpdate({id : req.param('id')}, {$inc : {like : 1}}, function(err, result){
             if(err){
