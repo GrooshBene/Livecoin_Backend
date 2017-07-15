@@ -87,7 +87,7 @@ function init(app, User, Coin, randomString){
 		console.log("Update Loop Off!");
     }, 60000);
 	app.post('/coin/user/favorite/add', function(req, res){
-		User.findOneAndUpdate({_id : req.param('user_id')}, {$push : {favorite : req.param('coin_id')}})
+		User.update({_id : req.param('user_id')}, {$push : {favorite : req.param('coin_id')}})
 			.exec(function(err, result){
 			if(err){
 				console.log('/coin/add/user failed');
