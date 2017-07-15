@@ -60,13 +60,15 @@ function init(app, Coin, randomString){
             }
         });
     setInterval(function(){
+		console.log("Update Loop On!");
         poloniex.returnTicker(function(err, ticker){
             if(err){
                 console.log(err);
             }
+			console.log(ticker);
             var temp_array = Object.keys(ticker);
             for (i=0; i<temp_array.length; i++){
-                Coin.findOneAndUpdate({name : temp_array},
+                Coin.findOneAndUpdate({name : temp_array[i]},
             {
                 price : ticker[temp_array[i]].last,
                 volume : ticker[temp_array[i]].baseVolume,
@@ -82,7 +84,18 @@ function init(app, Coin, randomString){
         });
             }
         });
-    }, 10000);
+		console.log("Update Loop Off!");
+    }, 60000);
+	app.post('/coin/add/user', function(req, res){
+		User.findOneAndUpdate({_id : req.param('user_id'), {$push : {favorite : {req.param('coin_id')}}}})
+			.exec(function(err, result){
+			if(err){
+				console.log('/coin/add/user failed');
+				res.send(401, err);
+			}
+			res.send(200, result);
+		});
+	});
     app.post('/coin/find/:companyName', function(req, res){
         Coin.find({company : req.param('companyName')}, function(err, result){
             if(err){

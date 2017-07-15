@@ -4,7 +4,8 @@ function init(app, User, randomString){
     var FCM = require('fcm-node');
     var serverKey = 'AAAAVBxXaUE:APA91bE81zytT0yAbdDThAeruMFe8eMkfH1-XSs1gyt_ugYIOvsQDW0FoRenMqPYBTCx2ttgY24az69Mh9fOjGzA70TsDon5YawSsUfqIq0ef2l55b276x28xDXEfmwV8HC7H6Ieao6h'
     var fcm = new FCM(serverKey);
-    // var mailer = require('nodemailer');
+
+	// var mailer = require('nodemailer');
     //asdf
 
     // function mail_auth(reciever, id, password){
