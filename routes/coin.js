@@ -96,6 +96,15 @@ function init(app, Coin, randomString){
 			res.send(200, result);
 		});
 	});
+	app.post('/coin/user/favorite', function(req, res){
+		User.findOne({_id : req.param('user_id')}).populate('favorite').exec(function(err, result){
+			if(err){
+				console.log('/coin/user/favorite failed');
+				res.send(401, err);
+			}
+			res.send(200, result);
+		});
+	});
     app.post('/coin/find/:companyName', function(req, res){
         Coin.find({company : req.param('companyName')}, function(err, result){
             if(err){
