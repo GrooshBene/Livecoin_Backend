@@ -169,7 +169,8 @@ function init(app, User, randomString){
             scrap : [],
             emailVeryfied : 0
         });
-        User.find({email : req.param('email')}.exec(function(err, result){
+        User.find({email : req.param('email')}) 
+			.exec(function(err, result){
             if(err){
                 console.log('/auth/local/register DB Error');
                 res.send(403, "/auth/loca/register DB Error");
@@ -190,7 +191,7 @@ function init(app, User, randomString){
                     }
                 });
             }
-        }));
+        });
     });
 
     app.post('/auth/local/register/mail', function(req, res){

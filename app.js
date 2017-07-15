@@ -83,7 +83,7 @@ app.set('view engine', 'jade');
 
 //Load Modules
 require('./routes/auth.js')(app, User, randomString);
-require('./routes/coin.js')(app, Coin, randomString);
+require('./routes/coin.js')(app, User, Coin, randomString);
 require('./routes/comment.js')(app, User, Text, randomString, Coin);
 
 // uncomment after placing your favicon in /public

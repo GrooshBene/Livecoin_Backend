@@ -1,5 +1,5 @@
 module.exports = init;
-function init(app, Coin, randomString){
+function init(app, User, Coin, randomString){
     var poloniex_api = require('poloniex-api-node');
     var poloniex = new poloniex_api('KIR1UZCY-AZ8K2TET-BCGD5C6W-HQ4KU5A4','824a2e3e1b276079ea3f625609f033f0dd92104f7fac0b797ea01874827793e20d50d435dc87e4ef7ce878b3b99f70c33b0a4b355ad91bc64fe48bf8147f7213');
     var BFX = require('bitfinex-api-node');
@@ -87,7 +87,7 @@ function init(app, Coin, randomString){
 		console.log("Update Loop Off!");
     }, 60000);
 	app.post('/coin/user/favorite/add', function(req, res){
-		User.findOneAndUpdate({_id : req.param('user_id'), {$push : {favorite : {req.param('coin_id')}}}})
+		User.findOneAndUpdate({_id : req.param('user_id')}, {$push : {favorite : req.param('coin_id')}})
 			.exec(function(err, result){
 			if(err){
 				console.log('/coin/add/user failed');
