@@ -42,6 +42,10 @@ LiveCoin Backend Server
     scrap : Array
 
         Text Schema의 id값을 배열로 저장합니다. 조회시 TextSchema의 정보를 반환합니다.
+	
+	emailVeryfied : Number
+		
+		Email 인증 여부를 나타내는 값입니다. 인증 안됨을 0으로 표기합니다.
 
 > TextSchema
 
@@ -210,7 +214,13 @@ LiveCoin Backend Server
 
 >> Returning Value
 
-    needs to be update
+    >>> On Success
+		
+		HTTP Code 200, Updated Coin Schema
+
+	>>> On Failure
+
+		DB Error : HTTP Code 401
 
 > /coin/dislike : Coin Schema Dislike Activity
 
@@ -220,54 +230,184 @@ LiveCoin Backend Server
 
 >> Returning Value
 
-    needs to be update
+    >>> On Success
+		
+		HTTP Code 200, Updated Coin Schema
+
+	>>> On Failure
+
+		DB Error : HTTP Code 401
+
+> /coin/find/:companyName : 해당하는 거래소의 코인 정보를 모두 가져옵니다.
+
+>> Requiring Params
+
+	companyName (URL Param) : Coin Company name
+	
+>> Returning Value
+	
+	>>> On Success
+	
+		HTTP Code 200, Searched Coin Schema Array
+		
+	>>> On Failure
+		
+		DB Error : HTTP Code 401 
+		
+> /coin/find/:companyName/:coinName : 해당하는 거래소의 단일 코인 정보를 가져옵니다.
+
+>> Requiring Params
+	
+	companyName (URL Param) : Coin Company name
+	
+	coinName (URL Param) : Coin name
+	
+>> Returning Value
+
+	>>> On Success
+	
+		HTTP Code 200, Searched Coin Schema
+		
+	>>> On Failure
+	
+		DB Error : HTTP Code 401
+		
+> /coin/user/favorite/add : 유저의 선호코인을 추가합니다.
+
+>> Requiring Params
+
+	user_id : Update Target User id
+
+	coin_id : coin id
+
+>> Returning Value
+	
+	>>> On Success
+
+		HTTP Code 200, Updated User Schema
+
+	>>> On Failure
+
+		DB Error : HTTP Code 401
+
+> /coin/user/favorite : 유저의 선호코인 정보들을 모두 가져옵니다.
+
+>> Requiring Params
+	
+	user_id : Search Target User id
+
+>> Returning Value
+
+	>>> On Success
+
+		HTTP Code 200, Searched User Schema
+
+	>>> On Failure
+
+		DB Error : HTTP Code 401
 
 > /comment/add : Create Comment
 
 >> Requiring Params
 
-    needs to be update
+   	user_id : Writer's id
+
+	coin_id : Coin's id	
+
+	content : Comment's content
 
 >> Returning Value
 
-    needs to be update
+    >>> On Success
+		
+		HTTP Code 200, Created Comment Schema
+
+	>>> On Failure
+
+		DB Error : HTTP Code 401
+
+> /comment/:company/:coin : 제시한 코인에 해당하는 댓글을 모두 불러옵니다.
+
+>> Requiring Params
+
+	company : 코인의 거래소입니다.
+
+	name : 코인의 통화 종류입니다.
+
+>> Returning Value
+
+	>>> On Success
+
+		HTTP Code 200, Searched Comment Schema Array
+
+	>>> On Failure
+
+		DB Error : HTTP Code 401
 
 > /comment/:id/block : Comment Block Activity
 
 >> Requiring Params
 
-    needs to be update
+    id : Block Target Comment id
+
+	user_id : User's Id
 
 >> Returning Value
 
-    needs to be update
+    >>> On Success
+
+		HTTP Code 200, Updated User Schema
+
+	>>> On Failure
+
+		DB Error : HTTP Code 401
 
 > /comment/:id/like : Comment Like Activity
 
 >> Requiring Params
 
-    needs to be update
+   id : Update Target Comment id 
 
 >> Returning Value
 
-    needs to be update
+    >>> On Success
+
+		HTTP Code 200, Update Comment Schema
+
+	>>> On Failure
+
+		DB Error : HTTP Code 401
 
 > /comment/:id/scrap : Comment Scrap Activity
 
 >> Requiring Params
 
-    needs to be update
+    id (URL Param) : Push Target comment id
+
+	user_id : Update Target user id
 
 >> Returning Value
 
-    needs to be update
+   	>>> On Success
+
+		HTTP Code 200, Updated User Schema
+
+	>>> On Failure
+
+		DB Error : HTTP Code 401
 
 > /comment/:id/report : Comment Report Activity
 
 >> Requiring Params
 
-    needs to be update
+    id : Report Target comment id
 
 >> Returning Value
 
-    needs to be update
+    >>> On Success
+
+		HTTP Code 200, Reported Comment Schema
+
+	>>> On Failure
+
+		DB Error : HTTP Code 401

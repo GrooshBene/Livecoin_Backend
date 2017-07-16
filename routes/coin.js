@@ -123,16 +123,7 @@ function init(app, User, Coin, randomString){
 			res.send(200, result);
 		})
 	});
-    app.post('/coin/like', function(req, res){
-        Coin.findOneAndUpdate({id : req.param('id')}, {$inc : {like : 1}}, function(err, result){
-            if(err){
-                console.log("/coin/like failed");
-                res.send(401, err);
-            }
-            res.send(200, result);
-        });
-    });
-
+    
     app.post('/coin/like', function(req, res){
         Coin.findOneAndUpdate({id : req.param('id')}, {$inc : {like : 1}}, function(err, result){
             if(err){

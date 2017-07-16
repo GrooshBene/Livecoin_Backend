@@ -3,11 +3,11 @@ function init(app, User, Text, randomString, Coin){
     app.post('/comment/add', function(req, res){
         var text = new Text({
             _id : randomString.generate(13),
-            writer : req.param('id'),
+            writer : req.param('user_id'),
             like : 0,
             content : req.param('content')
         });
-        Coin.findOneAndUpdate({id : req.param('id')}, {$push : {comments : text._id}}, function(err, result){
+        Coin.findOneAndUpdate({id : req.param('coin_id')}, {$push : {comments : text._id}}, function(err, result){
             if(err){
                 console.log('/comment/add Coin Update Error');
                 res.send(401, '/comment/add Coin Update Error');
@@ -39,7 +39,7 @@ function init(app, User, Text, randomString, Coin){
     });
 
     app.post('/comment/:id/like', function(req, res){
-        Coin.findOneAndUpdate({_id : req.param('id')}, {$inc : {like : 1}}, function(req, res){
+        Text.findOneAndUpdate({_id : req.param('id')}, {$inc : {like : 1}}, function(req, res){
             if(err){
                 console.log('/comment/:id/like Update DB Error');
                 res.send(401, '/comment/:id/:like Update Error');
