@@ -131,19 +131,19 @@ function init(app, User, randomString){
     });
 
     app.get('/auth/facebook/token', passport.authenticate('facebook-token'), function(req, res){
-        // console.log("User Token : "+ req.param('access_token'));
-        // if(req.user){
-        //     User.findOne({_id : req.user.id}, function(err, result){
-        //         if(err){
-        //             console.log("/auth/facebook/token User Finding Error : " + err);
-        //             res.send(404, "User Finding DB Error");
-        //         }
-        //         res.send(200, result)
-        //     });
-        // }
-        // else if(!req.user){
-        //     res.send(404, "Can't find User On Facebook. It May Be Unusable User Data.");
-        // }
+        console.log("User Token : "+ req.param('access_token'));
+        if(req.user){
+            User.findOne({_id : req.user.id}, function(err, result){
+                if(err){
+                    console.log("/auth/facebook/token User Finding Error : " + err);
+                    res.send(404, "User Finding DB Error");
+                }
+                res.send(200, result)
+            });
+        }
+        else if(!req.user){
+            res.send(404, "Can't find User On Facebook. It May Be Unusable User Data.");
+        }
     });
 
     app.get('/auth/facebook/callback', passport.authenticate('facebook-token', {
