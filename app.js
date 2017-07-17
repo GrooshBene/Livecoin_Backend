@@ -27,7 +27,7 @@ var UserSchema = new schema({
   favorite : [{
     type : String,
     ref : 'coins'
-  }],
+  }],	
   scrap : [{
     type : String,
     ref : 'texts'
@@ -41,7 +41,10 @@ var TextSchema = new schema({
     type : String,
     ref : 'users'
   },
-  like : Number,
+  like : [{
+  	type : String,
+	  ref : 'users'
+  }],
   content : String
 });
 
@@ -53,8 +56,14 @@ var CoinSchema = new schema({
   volume : String,
   dailyLow : String,
   dailyHigh : String,
-  like : Number,
-  dislike : Number,
+  like : [{
+  	type : String,
+	  ref : 'users'
+  }],
+  dislike : [{
+  	type : String,
+	  ref : 'users'
+  }],
   comments : [{
     type : String,
     ref : 'texts'

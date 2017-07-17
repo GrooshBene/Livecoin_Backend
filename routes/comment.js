@@ -4,7 +4,7 @@ function init(app, User, Text, randomString, Coin){
         var text = new Text({
             _id : randomString.generate(13),
             writer : req.param('user_id'),
-            like : 0,
+            like : [],
             content : req.param('content')
         });
         Coin.findOneAndUpdate({id : req.param('coin_id')}, {$push : {comments : text._id}}, function(err, result){
@@ -39,7 +39,7 @@ function init(app, User, Text, randomString, Coin){
     });
 
     app.post('/comment/:id/like', function(req, res){
-        Text.findOneAndUpdate({_id : req.param('id')}, {$inc : {like : 1}}, function(req, res){
+        Text.findOneAndUpdate({_id : req.param('id')}, {$push : {like : req.param('user_id')}}, function(req, res){
             if(err){
                 console.log('/comment/:id/like Update DB Error');
                 res.send(401, '/comment/:id/:like Update Error');
