@@ -90,6 +90,8 @@ function init(app, User, randomString){
                     authToken : "",
                     verifyingToken : "",
                     favorite : [],
+					like : [],
+					dislike : [],
                     scrap : [],
                     emailVeryfied : 1
                 });
@@ -162,6 +164,8 @@ function init(app, User, randomString){
             authToken : randomString.generate(15),
             verifyingToken : /*mail_auth(req.param('email'), 'wltn9247', 'wltn6705')*/'',
             favorite : [],
+			like : [],
+			dislike : [],
             scrap : [],
             emailVeryfied : 0
         });

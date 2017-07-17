@@ -130,6 +130,13 @@ function init(app, User, Coin, randomString){
                 console.log('/coin/dislike failed');
                 res.send(401, err);
             }
+			User.findOneAndUpdate({_id : req.param('user_id')}, {$push : {like : req.param('id')}}, function(err, result){
+				if(err){
+					console.log(err);
+					res.send(401, err);
+				}	
+				console.log(result);
+			});
             res.send(200, result);
         });
     });
@@ -141,7 +148,14 @@ function init(app, User, Coin, randomString){
                 res.send(401, result);
                 throw err;
             }
-            res.send(200, result);
+            User.findOneAndUpdate({_id : req.param('user_id')}, {$push : {like : req.param('id')}}, function(err, result){
+				if(err){
+					console.log(err);
+					res.send(401, err);
+				}
+				console.log(result);
+			});
+			res.send(200, result);
         });
     });
 
