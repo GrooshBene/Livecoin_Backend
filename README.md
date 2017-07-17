@@ -55,7 +55,9 @@ LiveCoin Backend Server
 
         User Schema의 id값을 저장합니다. 조회시 UserSchema의 정보를 반환합니다.
 
-    like : Number
+    like : Array
+		
+		추천을 누른 유저id의 배열입니다.
     
     content : String
 
@@ -85,13 +87,13 @@ LiveCoin Backend Server
 
         일일 상한가를 나타냅니다.
 
-    like : Number
+    like : Array
 
-        추천 개수를 나타냅니다.
+        추천을 누른 유저id의 배열을 나타냅니다.
 
-    dislike : Number
+    dislike : Array
 
-        비추천 개수를 나타냅니다.
+        비추천을 누른 유저id의 배열을 나타냅니다.
 
     comments : Array
 
@@ -212,6 +214,8 @@ LiveCoin Backend Server
 
     id : Coin Schema id
 
+	user_id : User id
+
 >> Returning Value
 
     >>> On Success
@@ -227,6 +231,8 @@ LiveCoin Backend Server
 >> Requiring Params
 
     id : Coin Schema id
+	
+	user_id : User id
 
 >> Returning Value
 
@@ -366,7 +372,9 @@ LiveCoin Backend Server
 
 >> Requiring Params
 
-   id : Update Target Comment id 
+   id : Update Target Comment id
+   
+   user_id : User id 
 
 >> Returning Value
 
