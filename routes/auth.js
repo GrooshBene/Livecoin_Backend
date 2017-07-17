@@ -80,8 +80,6 @@ function init(app, User, randomString){
             if(!user){
                 user = new User({
                     _id : profile.id,
-                    firstName : profile.name[1],
-                    lastName : profile.name[0],
                     email : profile.email,
                     nickname : profile.username,
                     password : "null",
@@ -154,8 +152,6 @@ function init(app, User, randomString){
     app.post('/auth/local/register', function(req, res){
         user = new User({
             _id : randomString.generate(13),
-            firstName : req.param('firstName'),
-            lastName : req.param('lastName'),
             email : req.param('email'),
             password : req.param('password'),
             nickname : req.param('nickname'),

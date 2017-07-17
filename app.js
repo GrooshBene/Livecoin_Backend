@@ -15,8 +15,6 @@ var app = express();
 
 var UserSchema = new schema({
   _id : String,
-  firstName : String,
-  lastName : String,
   nickname : String,
   email : String,
   password : String,
