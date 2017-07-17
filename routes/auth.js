@@ -90,9 +90,7 @@ function init(app, User, randomString){
                     authToken : "",
                     verifyingToken : "",
                     favorite : [],
-					like : [],
-					dislike : [],
-                    scrap : [],
+					scrap : [],
                     emailVeryfied : 1
                 });
                 user.save(function(err){
@@ -164,9 +162,7 @@ function init(app, User, randomString){
             authToken : randomString.generate(15),
             verifyingToken : /*mail_auth(req.param('email'), 'wltn9247', 'wltn6705')*/'',
             favorite : [],
-			like : [],
-			dislike : [],
-            scrap : [],
+			scrap : [],
             emailVeryfied : 0
         });
         User.find({email : req.param('email')}) 

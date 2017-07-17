@@ -43,8 +43,8 @@ function init(app, User, Coin, randomString){
                     volume : ticker[temp_array[i]].baseVolume,
                     dailyLow : ticker[temp_array[i]].low24hr,
                     dailyHigh : ticker[temp_array[i]].high24hr,
-                    like : 0,
-                    dislike : 0,
+                    like : [],
+                    dislike : [],
                     comments : [],
                     change : ticker[temp_array[i]].percentChange
                 });
@@ -125,37 +125,23 @@ function init(app, User, Coin, randomString){
 	});
     
     app.post('/coin/like', function(req, res){
-        Coin.findOneAndUpdate({id : req.param('id')}, {$inc : {like : 1}}, function(err, result){
+        Coin.findOneAndUpdate({id : req.param('id')}, {$push : {like : req.param('user_id')}}, function(err, result){
             if(err){
                 console.log('/coin/dislike failed');
                 res.send(401, err);
             }
-			User.findOneAndUpdate({_id : req.param('user_id')}, {$push : {like : req.param('id')}}, function(err, result){
-				if(err){
-					console.log(err);
-					res.send(401, err);
-				}	
-				console.log(result);
-			});
-            res.send(200, result);
+			res.send(200, result);
         });
     });
     
     app.post('/coin/dislike', function(req, res){
-        Coin.findOneAndUpdate({id : req.param('id')}, {$inc : {like :1}}, function(err, result){
+        Coin.findOneAndUpdate({id : req.param('id')}, {$push : {like : req.param('user_id')}}, function(err, result){
             if(err){
                 console.log("/coin/dislike failed");
                 res.send(401, result);
                 throw err;
             }
-            User.findOneAndUpdate({_id : req.param('user_id')}, {$push : {like : req.param('id')}}, function(err, result){
-				if(err){
-					console.log(err);
-					res.send(401, err);
-				}
-				console.log(result);
-			});
-			res.send(200, result);
+            res.send(200, result);
         });
     });
 
