@@ -20,13 +20,13 @@ function init(app, User, Coin, randomString){
         str = JSON.stringify(ticker, null, 4);
         console.log('Ticker : ' + str);
     });
-    // kraken.api('Ticker', {"pair": 'XBTCXLTC'}, function(err, data){
-    //     if(err){
-    //         console.log(err);
-    //         throw err;
-    //     }
-    //     console.log(data.result);
-    // })
+    kraken.api('AssetPairs', {}, function(err, data){
+        if(err){
+            console.log(err);
+            throw err;
+        }
+        console.log(data.result);
+    })
     poloniex.returnTicker(function(err, ticker){
         //needs Promise
             if(err){

@@ -5,56 +5,55 @@ function init(app, User, randomString){
     var serverKey = 'AAAAVBxXaUE:APA91bE81zytT0yAbdDThAeruMFe8eMkfH1-XSs1gyt_ugYIOvsQDW0FoRenMqPYBTCx2ttgY24az69Mh9fOjGzA70TsDon5YawSsUfqIq0ef2l55b276x28xDXEfmwV8HC7H6Ieao6h'
     var fcm = new FCM(serverKey);
 
-	// var mailer = require('nodemailer');
-    //asdf
+	 var mailer = require('nodemailer');
 
-    // function mail_auth(reciever, id, password){
-    //     var token = randomString.generate(16);
-    //     var smtpTransport = mailer.createTransport("SMTP", {
-    //         service : "Gmail",
-    //         auth : {
-    //             user : id,
-    //             pass : password
-    //         }
-    //     });
-    //     var mailOptions = {
-    //         from : '회원가입 <LiveCoin>',
-    //         to : receiver,
-    //         subject : "LiveCoin 회원가입 인증 메일입니다.",
-    //         text : token + " 을 이용하여 인증 부탁드립니다."
-    //     }
-    //     smtpTransport.sendMail(mailOptions, function(err, result){
-    //         if(err){
-    //             console.log("mail_auth error");
-    //             throw err;
-    //         }
-    //         console.log("Mail sended : " +result);
-    //     });
+    function mail_auth(reciever, id, password){
+        var token = randomString.generate(16);
+        var smtpTransport = mailer.createTransport("SMTP", {
+            service : "Gmail",
+            auth : {
+                user : id,
+                pass : password
+            }
+        });
+        var mailOptions = {
+            from : '회원가입 <LiveCoin>',
+            to : receiver,
+            subject : "LiveCoin 회원가입 인증 메일입니다.",
+            text : token + " 을 이용하여 인증 부탁드립니다."
+        }
+        smtpTransport.sendMail(mailOptions, function(err, result){
+            if(err){
+                console.log("mail_auth error");
+                throw err;
+            }
+            console.log("Mail sended : " +result);
+        });
 
-    //     return token;
-    // }
-    // function mail_send(reciever, id, password, content){
-    //     var smtpTransport = mailer.createTransport("SMTP", {
-    //         service : "Gmail",
-    //         auth : {
-    //             user : id,
-    //             pass : password
-    //         }
-    //     });
-    //     var mailOptions = {
-    //         from : "아이디/비밀번호 복구 <LiveCoin>",
-    //         to : reciever,
-    //         subject : 'LiveCoin 아이디/비밀번호 인증 메일입니다',
-    //         text : content
-    //     }
-    //     smtpTransport.sendMail(mailOptions, function(err, result){
-    //         if(err){
-    //             console.log("mail_send error");
-    //             throw err;
-    //         }
-    //         console.log("Mail Sended : " + result);
-    //     });
-    // }
+        return token;
+    	}
+    function mail_send(reciever, id, password, content){
+        var smtpTransport = mailer.createTransport("SMTP", {
+            service : "Gmail",
+            auth : {
+                user : id,
+                pass : password
+            }
+        });
+        var mailOptions = {
+            from : "아이디/비밀번호 복구 <LiveCoin>",
+            to : reciever,
+            subject : 'LiveCoin 아이디/비밀번호 인증 메일입니다',
+            text : content
+        }
+        smtpTransport.sendMail(mailOptions, function(err, result){
+            if(err){
+                console.log("mail_send error");
+                throw err;
+            }
+            console.log("Mail Sended : " + result);
+        });
+    }
 
     var FacebookTokenStrategy = require('passport-facebook-token');
     app.use(passport.initialize());
@@ -160,7 +159,7 @@ function init(app, User, randomString){
             refreshType : 0,
             refreshRate : 0,
             authToken : randomString.generate(15),
-            verifyingToken : /*mail_auth(req.param('email'), 'wltn9247', 'wltn6705')*/'',
+            verifyingToken : mail_auth(req.param('email'), 'wltn9247', 'wltn6705'),
             favorite : [],
 			scrap : [],
             emailVeryfied : 0
