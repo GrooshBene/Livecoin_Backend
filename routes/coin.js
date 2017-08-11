@@ -55,7 +55,7 @@ function init(app, User, Coin, randomString){
                         throw err;
                     }
                     console.log(coin.name);
-                    // console.log("Coin "+ ticker[temp_array[i]x].id + " Saved!");
+                    // console.log("Coin "+ ticker[temp_array[i]].id + " Saved!");
                 });
             }
         });
