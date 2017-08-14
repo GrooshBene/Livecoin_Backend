@@ -27,38 +27,6 @@ function init(app, User, Coin, randomString){
         }
         console.log(data.result);
     })
-    poloniex.returnTicker(function(err, ticker){
-        //needs Promise
-            if(err){
-                throw err;  
-             }
-            var temp_array = Object.keys(ticker);
-            for (i=0; i<temp_array.length; i++){
-                console.log(ticker[temp_array[i]].id);
-                var coin = new Coin({
-                    _id : randomString.generate(13),
-                    name : temp_array[i],
-                    company : "Poloniex",
-                    price : ticker[temp_array[i]].last,
-                    volume : ticker[temp_array[i]].baseVolume,
-                    dailyLow : ticker[temp_array[i]].low24hr,
-                    dailyHigh : ticker[temp_array[i]].high24hr,
-                    like : [],
-                    dislike : [],
-                    comments : [],
-                    change : ticker[temp_array[i]].percentChange
-                });
-
-                coin.save(function(err){
-                    if(err){
-                        console.log("Coin Data Setting Error!");
-                        throw err;
-                    }
-                    console.log(coin.name);
-                    // console.log("Coin "+ ticker[temp_array[i]].id + " Saved!");
-                });
-            }
-        });
     setInterval(function(){
 		console.log("Update Loop On!");
         poloniex.returnTicker(function(err, ticker){
@@ -75,7 +43,7 @@ function init(app, User, Coin, randomString){
                 dailyLow : ticker[temp_array[i]].low24hr,
                 dailyHigh : ticker[temp_array[i]].high24hr,
                 change : ticker[temp_array[i]].percentChange
-        }).exec(function(err, result){
+        }, {upsert : true}).exec(function(err, result){
                 if(err){
                     console.log("Coin Data Updating Error!");
                     throw err;
