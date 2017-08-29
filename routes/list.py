@@ -34,7 +34,7 @@ for key, value in kraken['result'].iteritems():
         'dailyHigh' : obj['result']['h'][0],
         'like' : [],
         'dislike' : [],
-        'comments' : [].
+        'comments' : [],
         'change' : "Not Supported"
         }
     collection.update({"name" : key, "company" : "kraken"}, coin, upsert = True)
