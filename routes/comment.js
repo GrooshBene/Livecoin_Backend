@@ -28,7 +28,7 @@ function init(app, User, Text, randomString, Coin){
             if(err){
                 console.log('/comment/:company/:coin Find DB Error');
                 res.send(401, '/comment/:company/:coin Find Error');
-            }
+                }
             console.log(result.comments);
             res.send(200, result.comments);
         });
@@ -47,7 +47,7 @@ function init(app, User, Text, randomString, Coin){
             res.send(200, result);
         });
     });
-
+ 
     app.post('/comment/:id/scrap', function(req, res){
         User.findOneAndUpdate({_id : req.param('user_id')}, {$push : {scrap : req.param(id)}}, function(req,res){
             if(err){
@@ -59,6 +59,6 @@ function init(app, User, Text, randomString, Coin){
     });
 
     app.post('/comment/:id/report', function(req, res){
-        //adminpage
+        User.findOneAndUpdate
     });
 }
