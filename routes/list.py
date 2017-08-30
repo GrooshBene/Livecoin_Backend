@@ -158,6 +158,7 @@ for key, value in poloniex.iteritems():
 #----------------------------------------------------------------------------------------------- coinone
 coinone = {"BTCUSD" : "btc", "BCHUSD" : "bch", "ETHUSD" : "eth", "ETCUSD" : "etc" , "XRPUSD" : "xrp"}
 for key, value in coinone.iteritems():
+    print "coinone : " + key
     res = requests.get("https://api.coinone.co.kr/ticker?currency=" + value);
     obj = res.json()
 
