@@ -19,7 +19,7 @@ def remove_key(d, key):
     return d
 
 #-------------------------------------------------------------------------------------------- kraken
-'''
+
 kraken = get_coin("https://api.kraken.com/0/public/AssetPairs")
 for key, value in kraken['result'].iteritems():
     if ".d" in key:
@@ -270,7 +270,6 @@ for key, value in bitstamp.iteritems():
         "change" : "Not Supported"
     }
     collection.update({"name" : key, "company" : "bitstamp"}, coin, upsert=True)
-'''
 #--------------------------------------------------------------------------------------------------- yunbi
 yunbi = get_coin("https://yunbi.com//api/v2/tickers.json")
 for key, value in yunbi.iteritems():
