@@ -44,7 +44,7 @@ for key, value in kraken['result'].iteritems():
         }
     collection.update({"name" : key, "company" : "kraken"}, coin, upsert = True)
     time.sleep(1)
-'''
+
 #-------------------------------------------------------------------------------------------- gemini
 gemini = get_coin("https://api.gemini.com/v1/symbols")
 for value in gemini:
@@ -73,6 +73,7 @@ for value in gemini:
 #--------------------------------------------------------------------------------------------- korbit
 korbit = {"ETCKRW" : "etc_krw", "BTCKRW" : "btc_krw", "XRPKRW" : "xrp_krw"}
 for key, value in korbit.iteritems():
+    print "korbit : " + key
     res = requests.get("https://api.korbit.co.kr/v1/ticker/detailed?currency_pair=" + value)
     obj = res.json()
     current_res = requests.get("https://api.korbit.co.kr/v1/ticker?currency_pair=" + value)
@@ -91,11 +92,12 @@ for key, value in korbit.iteritems():
         "change" : "Not Supported"
         }
     collection.update({"name" : key, "company" : "korbit"}, coin, upsert = True)
-
+'''
 #---------------------------------------------------------------------------------------------- okcoincn
 
 okcoincn = {"BTCCNY" : "btc_cny", "LTCCNY" : "ltc_cny", "ETHCNY" : "eth_cny" , "ETCCNY" : "etc_cny", "BCCCNY" : "bcc_cny"}
 for key, value in okcoincn.iteritems():
+    print "okcoincn : " + key
     res = requests.get("https://www.okcoin.cn/api/v1/ticker.do?symbol=" + value)
     obj = res.json()
     #current_res = requests.get("https://api.korbit.co.kr/v1/ticker?currency_pair=" + value)
@@ -104,10 +106,10 @@ for key, value in okcoincn.iteritems():
     coin = {
         "name" : key,
         "company" : "okcoincn",
-        "price" : obj['last'],
-        "volume" : obj['volume'],
-        "dailyLow" : obj['low'],
-        "dailyHigh" : obj['high'],
+        "price" : obj['ticker']['last'],
+        "volume" : obj['ticker']['vol'],
+        "dailyLow" : obj['ticker']['low'],
+        "dailyHigh" : obj['ticker']['high'],
         "like" : [],
         "dislike" : [],
         "comments" : [],
