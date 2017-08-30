@@ -19,11 +19,12 @@ def remove_key(d, key):
     return d
 
 #-------------------------------------------------------------------------------------------- kraken
+'''
 kraken = get_coin("https://api.kraken.com/0/public/AssetPairs")
 for key, value in kraken['result'].iteritems():
     if ".d" in key:
         continue
-    print value['altname']
+    print "kraken : " + value['altname']
     res = requests.get("https://api.kraken.com/0/public/Ticker?pair=" + value['altname'])
     obj = res.json()
     current_res = requests.get("https://api.kraken.com/0/public/Spread?pair=" + value['altname'])
@@ -43,28 +44,31 @@ for key, value in kraken['result'].iteritems():
         }
     collection.update({"name" : key, "company" : "kraken"}, coin, upsert = True)
     time.sleep(1)
-
+'''
 #-------------------------------------------------------------------------------------------- gemini
 gemini = get_coin("https://api.gemini.com/v1/symbols")
-for key, value in gemini['result'].iteritems():
-    res = requests.get("https://api.gemini.com/v1/pubticker/" + key)
+for value in gemini:
+    if "ethbtc" in value:
+        continue
+    print "gemini : " + value
+    res = requests.get("https://api.gemini.com/v1/pubticker/" + value)
     obj = res.json()
-    current_res = requests.get("https://api.gemini.com/v1/auction/" + key)
+    current_res = requests.get("https://api.gemini.com/v1/auction/" + value)
     current_obj = current_res.json()
 
     coin = {
-        "name" : key,
+        "name" : value,
         "company" : "gemini",
         "price" : current_obj['last_auction_price'],
         'volume' : obj['volume'],
-        "dailyLow" : obj['asks'],
+        "dailyLow" : obj['ask'],
         'dailyHigh' : obj['bid'],
         "like" : [],
         "dislike" : [],
         "comments" : [],
         "change" : "Not Supported"
         }
-    collection.update({"name" : key, "company" : "gemini"}, coin, upsert = True)
+    collection.update({"name" : value, "company" : "gemini"}, coin, upsert = True)
 
 #--------------------------------------------------------------------------------------------- korbit
 korbit = {"ETCKRW" : "etc_krw", "BTCKRW" : "btc_krw", "XRPKRW" : "xrp_krw"}
