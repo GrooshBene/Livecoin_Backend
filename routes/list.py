@@ -2,6 +2,7 @@ import urllib2
 import bs4
 from pymongo import MongoClient
 import requests, json
+import time
 
 client = MongoClient('localhost', 27017)
 db = client.livecoin
@@ -20,6 +21,9 @@ def remove_key(d, key):
 #-------------------------------------------------------------------------------------------- kraken
 kraken = get_coin("https://api.kraken.com/0/public/AssetPairs")
 for key, value in kraken['result'].iteritems():
+    if ".d" in key:
+        continue
+    print value['altname']
     res = requests.get("https://api.kraken.com/0/public/Ticker?pair=" + value['altname'])
     obj = res.json()
     current_res = requests.get("https://api.kraken.com/0/public/Spread?pair=" + value['altname'])
@@ -38,6 +42,7 @@ for key, value in kraken['result'].iteritems():
         'change' : "Not Supported"
         }
     collection.update({"name" : key, "company" : "kraken"}, coin, upsert = True)
+    time.sleep(1)
 
 #-------------------------------------------------------------------------------------------- gemini
 gemini = get_coin("https://api.gemini.com/v1/symbols")
