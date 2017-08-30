@@ -92,7 +92,6 @@ for key, value in korbit.iteritems():
         "change" : "Not Supported"
         }
     collection.update({"name" : key, "company" : "korbit"}, coin, upsert = True)
-'''
 #---------------------------------------------------------------------------------------------- okcoincn
 
 okcoincn = {"BTCCNY" : "btc_cny", "LTCCNY" : "ltc_cny", "ETHCNY" : "eth_cny" , "ETCCNY" : "etc_cny", "BCCCNY" : "bcc_cny"}
@@ -116,12 +115,12 @@ for key, value in okcoincn.iteritems():
         "change" : "Not Supported"
         }
     collection.update({"name" : key, "company" : "okcoincn"}, coin, upsert = True)
-
 #------------------------------------------------------------------------------------------------ bitflyer
 
 bitflyer = get_coin("https://api.bitflyer.jp/v1/markets")
 for value in bitflyer:
-    res = requests.get("https://api.bitflyer.jp/v1/ticker?product_code=" + value)
+    print "bitflyer : " + value['product_code']
+    res = requests.get("https://api.bitflyer.jp/v1/ticker?product_code=" + value['product_code'])
     obj = res.json()
 
     coin = {
@@ -129,8 +128,8 @@ for value in bitflyer:
         "company" : "bitflyer",
         "price" : obj['ltp'],
         "volume" : obj['volume'],
-        "dailyLow" : obj['low'],
-        "dailyHigh" : obj['high'],
+        "dailyLow" : obj['best_bid'],
+        "dailyHigh" : obj['best_ask'],
         "like" : [],
         "dislike" : [],
         "comments" : [],
@@ -141,6 +140,7 @@ for value in bitflyer:
 #----------------------------------------------------------------------------------------------- poloniex
 poloniex = get_coin("https://poloniex.com/public?command=returnTicker")
 for key, value in poloniex.iteritems():
+    print "poloniex : " + key
     coin = {
         "name" : key,
         "company" : "poloniex",
@@ -154,7 +154,7 @@ for key, value in poloniex.iteritems():
         "change" : value['percentChange']
         }
     collection.update({"name" : key, "company" : "poloniex"}, coin, upsert = True)
-
+'''
 #----------------------------------------------------------------------------------------------- coinone
 coinone = {"BTCUSD" : "btc", "BCHUSD" : "bch", "ETHUSD" : "eth", "ETCUSD" : "etc" , "XRPUSD" : "xrp"}
 for key, value in coinone.iteritems():
