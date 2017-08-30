@@ -18,6 +18,7 @@ def remove_key(d, key):
     del d[key]
     return d
 
+start_time = time.time()
 #-------------------------------------------------------------------------------------------- kraken
 
 kraken = get_coin("https://api.kraken.com/0/public/AssetPairs")
@@ -287,3 +288,9 @@ for key, value in yunbi.iteritems():
         "change" : "Not Supported"
     }
     collection.update({"name" : key.upper(), "company" : "yunbi"}, coin, upsert=True)
+time.sleep(1.2)
+finish_time = time.time()
+
+time_result = finish_time - start_time
+
+print "Update Done! : " + str(time_result) + " sec"
