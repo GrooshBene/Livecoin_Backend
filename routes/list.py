@@ -238,7 +238,6 @@ for key, value in coinbase.iteritems():
             "change" : "Not Supported"
         }
         collection.update({"name" : key+ikey, "company" : "coinbase"}, coin, upsert=True)
-'''
 #------------------------------------------------------------------------------------------------ bitstamp
 bitstamp = {
     "BTCUSD" : "btcusd",
@@ -271,18 +270,18 @@ for key, value in bitstamp.iteritems():
         "change" : "Not Supported"
     }
     collection.update({"name" : key, "company" : "bitstamp"}, coin, upsert=True)
-
+'''
 #--------------------------------------------------------------------------------------------------- yunbi
-yunbi = requests.get("https://yunbi.com//api/v2/tickers.json")
-obj = res.json()
+yunbi = get_coin("https://yunbi.com//api/v2/tickers.json")
 for key, value in yunbi.iteritems():
+    print "yunbi : " + key
     coin = {
         "name" : key.upper(),
         "company" : "yunbi",
-        "price" : value['last'],
-        "volume" : value['volume'],
-        "dailyLow" : value['low'],
-        "dailyHigh" : value['high'],
+        "price" : value['ticker']['last'],
+        "volume" : value['ticker']['vol'],
+        "dailyLow" : value['ticker']['low'],
+        "dailyHigh" : value['ticker']['high'],
         "like" : [],
         "dislike" : [],
         "comments" : [],
