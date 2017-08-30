@@ -196,12 +196,13 @@ for obj in bittrex['result']:
         "change" : "Not Supported"
     }
     collection.update({"name" : obj['MarketName'], "company" : "bittrex"}, coin, upsert=True)
-'''
+
 #------------------------------------------------------------------------------------------------ bithumb
 bithumb = get_coin("https://api.bithumb.com/public/ticker/all")
 bithumb_data = remove_key(bithumb['data'], "date")
 
 for key, value in bithumb_data.iteritems():
+    print "bithumb : " + key
     coin = {
         "name" : key,
         "company" : "bithumb",
@@ -219,6 +220,7 @@ for key, value in bithumb_data.iteritems():
 #------------------------------------------------------------------------------------------------ coinbase
 coinbase = {"BTC" : "btc" , "ETH" : "eth", "LTC" : "ltc"}
 for key, value in coinbase.iteritems():
+    print "coinbase : " + key
     res = requests.get("https://api.coinbase.com/v2/exchange-rates?currency=" + value)
     obj = res.json()
     coinbase_obj = obj['data']['rates']
@@ -236,7 +238,7 @@ for key, value in coinbase.iteritems():
             "change" : "Not Supported"
         }
         collection.update({"name" : key+ikey, "company" : "coinbase"}, coin, upsert=True)
-
+'''
 #------------------------------------------------------------------------------------------------ bitstamp
 bitstamp = {
     "BTCUSD" : "btcusd",
@@ -250,9 +252,10 @@ bitstamp = {
     "LTCBTC" : "ltcbtc",
     "ETHUSD" : "ethusd",
     "ETHEUR" : "etheur",
-    "ETHBTC" : "ethbuc"
+    "ETHBTC" : "ethbtc"
     }
 for key, value in bitstamp.iteritems():
+    print "bitstamp : " + value
     res = requests.get("https://www.bitstamp.net/api/v2/ticker/" + value)
     obj = res.json()
     coin = {
