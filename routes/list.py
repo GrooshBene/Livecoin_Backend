@@ -154,7 +154,6 @@ for key, value in poloniex.iteritems():
         "change" : value['percentChange']
         }
     collection.update({"name" : key, "company" : "poloniex"}, coin, upsert = True)
-'''
 #----------------------------------------------------------------------------------------------- coinone
 coinone = {"BTCUSD" : "btc", "BCHUSD" : "bch", "ETHUSD" : "eth", "ETCUSD" : "etc" , "XRPUSD" : "xrp"}
 for key, value in coinone.iteritems():
@@ -176,28 +175,28 @@ for key, value in coinone.iteritems():
         }
     collection.update({"name" : key, "company" : "coinone"} ,coin, upsert = True)
     
-
 #------------------------------------------------------------------------------------------------ bittrex
 
 bittrex = get_coin("https://bittrex.com/api/v1.1/public/getmarkets")
 for obj in bittrex['result']:
+    print "bittrex : " + obj['MarketName']
     res = requests.get("https://bittrex.com/api/v1.1/public/getticker?market=" + obj['MarketName'])
     market_obj = res.json()
 
     coin = {
         "name" : obj['MarketName'],
         "company" : "bittrex",
-        "price" : market_obj['Last'],
+        "price" : market_obj['result']['Last'],
         "volume" : "",
-        "dailyLow" : market_obj['Bid'],
-        "dailyHigh" : market_obj['Ask'],
+        "dailyLow" : market_obj['result']['Bid'],
+        "dailyHigh" : market_obj['result']['Ask'],
         "like" : [],
         "dislike" : [],
         "comments" : [],
         "change" : "Not Supported"
     }
     collection.update({"name" : obj['MarketName'], "company" : "bittrex"}, coin, upsert=True)
-
+'''
 #------------------------------------------------------------------------------------------------ bithumb
 bithumb = get_coin("https://api.bithumb.com/public/ticker/all")
 bithumb_data = remove_key(bithumb['data'], "date")
