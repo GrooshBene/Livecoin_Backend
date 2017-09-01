@@ -94,7 +94,7 @@ function init(app, User, Coin, randomString){
 	});
     
     app.post('/coin/like/:companyName/:coinName', function(req, res){
-        Coin.findOneAndUpdate({id : mongoose.Schema.Types.ObjectId(req.param('id'))}, {$push : {like : req.param('user_id')}}, {new : true}, function(err, result){
+        Coin.findOneAndUpdate({company : req.param('companyName'), name : req.param('coinName')}, {$push : {like : req.param('user_id')}}, function(err, result){
             if(err){
                 console.log('/coin/dislike failed');
                 res.send(401, err);
@@ -104,7 +104,7 @@ function init(app, User, Coin, randomString){
     });
     
     app.post('/coin/dislike/:companyName/:coinName', function(req, res){
-        Coin.findOneAndUpdate({id : mongoose.Schema.Types.ObjectId(req.param('id'))}, {$push : {like : req.param('user_id')}}, {new : true}, function(err, result){
+        Coin.findOneAndUpdate({company : req.param('companyName'), name : req.param('coinName')}, {$push : {like : req.param('user_id')}}, function(err, result){
             if(err){
                 console.log("/coin/dislike failed");
                 res.send(401, result);
