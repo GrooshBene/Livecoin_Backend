@@ -1,5 +1,6 @@
 module.exports = init;
 function init(app, User, Text, randomString, Coin){
+    var mongoose = require('mongoose');
     app.post('/comment/add', function(req, res){
         var text = new Text({
             _id : randomString.generate(13),
@@ -7,17 +8,17 @@ function init(app, User, Text, randomString, Coin){
             like : [],
             content : req.param('content')
         });
-        Coin.findOneAndUpdate({id : req.param('coin_id')}, {$push : {comments : text._id}}, function(err, result){
-            if(err){
-                console.log('/comment/add Coin Update Error');
-                res.send(401, '/comment/add Coin Update Error');
-            }
-        });
         text.save(function(err){
             if(err){
                 console.log('/comment/add Save Error');
                 res.send(401, '/comment/add Save Error');
             }
+            Coin.findOneAndUpdate({id : mongoose.Schema.Types.ObjectId(req.param('coin_id'))}, {$push : {comments : text._id}}, function(err, result){
+                if(err){
+                    console.log('/comment/add Coin Update Error');
+                    res.send(401, '/comment/add Coin Update Error');
+                }
+            });
             res.send(200, text);
         });
 
