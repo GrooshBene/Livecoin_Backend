@@ -37,7 +37,7 @@ LiveCoin Backend Server
 
     favorite : Array
 
-        Coin Schema의 id값을 배열로 저장합니다. 조회시 CoinSchema의 정보를 반환합니다.
+        Coin Schema의 id값(ObjectId)을 배열로 저장합니다. 조회시 CoinSchema의 정보를 반환합니다.
 
     scrap : Array
 
@@ -101,7 +101,7 @@ LiveCoin Backend Server
 
     change : String
 
-        값 변경 퍼센티지를 나타냅니다.
+        값 변경 퍼센티지를 나타냅니다. (거래소에 따라 지원여부 다름)
 
 
 ### API Document
@@ -208,13 +208,17 @@ LiveCoin Backend Server
 
         Unmatched Token : HTTP Code 404
 
-> /coin/like : Coin Schema Like Activity
+> /coin/like/:Company/:CoinName : Coin Schema Like Activity
 
 >> Requiring Params
 
     id : Coin Schema id
 
 	user_id : User id
+
+	company : (URL Param) Company Name
+
+	coinname : (URL Param) Coin Name
 
 >> Returning Value
 
@@ -226,13 +230,17 @@ LiveCoin Backend Server
 
 		DB Error : HTTP Code 401
 
-> /coin/dislike : Coin Schema Dislike Activity
+> /coin/dislike/:Company/:CoinName : Coin Schema Dislike Activity
 
 >> Requiring Params
 
     id : Coin Schema id
 	
 	user_id : User id
+
+	company : (URL Param) Company Name
+
+    coinname : (URL Param) Coin Name
 
 >> Returning Value
 
