@@ -25,7 +25,7 @@ var UserSchema = new schema({
   authToken : String,
   verifyingToken : String,
   favorite : [{
-    type : String,
+    type : mongoose.Schema.Types.ObjectId,
     ref : 'coins'
   }],	
   scrap : [{
@@ -49,7 +49,7 @@ var TextSchema = new schema({
 });
 
 var CoinSchema = new schema({
-  _id : String,
+  _id : schema.Types.ObjectId,
   name : String,
   company : String,
   price : String,

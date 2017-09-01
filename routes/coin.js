@@ -1,5 +1,6 @@
 module.exports = init;
 function init(app, User, Coin, randomString){
+	var mongoose = require('mongoose');
     // var poloniex_api = require('poloniex-api-node');
     // var poloniex = new poloniex_api('KIR1UZCY-AZ8K2TET-BCGD5C6W-HQ4KU5A4','824a2e3e1b276079ea3f625609f033f0dd92104f7fac0b797ea01874827793e20d50d435dc87e4ef7ce878b3b99f70c33b0a4b355ad91bc64fe48bf8147f7213');
     // var BFX = require('bitfinex-api-node');
@@ -55,7 +56,7 @@ function init(app, User, Coin, randomString){
 		// console.log("Update Loop Off!");
     // }, 60000);
 	app.post('/coin/user/favorite/add', function(req, res){
-		User.update({_id : req.param('user_id')}, {$push : {favorite : req.param('coin_id')}})
+		User.findOneAndUpdate({_id : req.param('user_id')}, {$push : {favorite : mongoose.Types.ObjectId(req.param('coin_id'))}}, {new : true})
 			.exec(function(err, result){
 			if(err){
 				console.log('/coin/add/user failed');
@@ -92,8 +93,8 @@ function init(app, User, Coin, randomString){
 		})
 	});
     
-    app.post('/coin/like', function(req, res){
-        Coin.findOneAndUpdate({id : req.param('id')}, {$push : {like : req.param('user_id')}}, function(err, result){
+    app.post('/coin/like/:companyName/:coinName', function(req, res){
+        Coin.findOneAndUpdate({id : mongoose.Schema.Types.ObjectId(req.param('id'))}, {$push : {like : req.param('user_id')}}, {new : true}, function(err, result){
             if(err){
                 console.log('/coin/dislike failed');
                 res.send(401, err);
@@ -102,8 +103,8 @@ function init(app, User, Coin, randomString){
         });
     });
     
-    app.post('/coin/dislike', function(req, res){
-        Coin.findOneAndUpdate({id : req.param('id')}, {$push : {like : req.param('user_id')}}, function(err, result){
+    app.post('/coin/dislike/:companyName/:coinName', function(req, res){
+        Coin.findOneAndUpdate({id : mongoose.Schema.Types.ObjectId(req.param('id'))}, {$push : {like : req.param('user_id')}}, {new : true}, function(err, result){
             if(err){
                 console.log("/coin/dislike failed");
                 res.send(401, result);

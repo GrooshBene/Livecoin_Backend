@@ -159,7 +159,8 @@ function init(app, User, randomString){
             refreshType : 0,
             refreshRate : 0,
             authToken : randomString.generate(15),
-            verifyingToken : mail_auth(req.param('email'), 'wltn9247', 'wltn6705'),
+            verifyingToken : "",
+            // verifyingToken : mail_auth(req.param('email'), 'wltn9247', 'wltn6705'),
             favorite : [],
 			scrap : [],
             emailVeryfied : 0
@@ -238,8 +239,8 @@ function init(app, User, randomString){
                     res.send(401, "Unvalid User Infomation");
                 }
                 else if (req.param('email') != undefined && result.password == req.param('password')) {
-                    console.log("User " + result.name + "Logged In");
-                    res.send(200, response);
+                    console.log("User " + result.nickname + "Logged In");
+                    res.send(200, result);
                 }
                 else if (result.password != req.param('password')) {
                     console.log("Password Error!");

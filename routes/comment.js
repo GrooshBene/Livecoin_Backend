@@ -18,7 +18,7 @@ function init(app, User, Text, randomString, Coin){
                 console.log('/comment/add Save Error');
                 res.send(401, '/comment/add Save Error');
             }
-            res.send(200, text);
+            res.send(200, result);
         });
 
     });
