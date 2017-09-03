@@ -125,7 +125,7 @@ for value in bitflyer:
     obj = res.json()
 
     coin = {
-        "name" : value,
+        "name" : value['product_code'],
         "company" : "bitflyer",
         "price" : obj['ltp'],
         "volume" : obj['volume'],
