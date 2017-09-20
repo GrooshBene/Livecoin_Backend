@@ -79,8 +79,8 @@ function init(app, User, randomString){
             if(!user){
                 user = new User({
                     _id : profile.id,
-                    email : profile.email,
-                    nickname : profile.username,
+                    email : profile.emails[0],value,
+                    nickname : profile.displayName,
                     password : "null",
                     alertType : 0,
                     alertSound : "Basic",
