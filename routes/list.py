@@ -193,18 +193,24 @@ for key, value in poloniex.iteritems():
         "change" : value['percentChange']
         }
     collection.update({"name" : key, "company" : "poloniex"}, coin, upsert = True)
-    '''
+    
 #----------------------------------------------------------------------------------------------- coinone
 coinone = {"BTCUSD" : "btc", "BCHUSD" : "bch", "ETHUSD" : "eth", "ETCUSD" : "etc" , "XRPUSD" : "xrp"}
 for key, value in coinone.iteritems():
     print "coinone : " + key
     res = requests.get("https://api.coinone.co.kr/ticker?currency=" + value);
     obj = res.json()
+    temp_schema = collection.find_one({"company" : "kraken", "name" : key})
+    if temp_schema is None:
+        prev_value = 0
+    elif temp_schema is not None:
+        prev_value = temp_schema['price']
 
     coin = {
         "name" : key,
         "company" : "coinone",
         "price" : obj['last'],
+        "prevPrice" : prev_value,
         "volume" : obj['volume'],
         "dailyLow" : obj['low'],
         "dailyHigh" : obj['high'],
@@ -214,7 +220,7 @@ for key, value in coinone.iteritems():
         "change" : "Not Supported"
         }
     collection.update({"name" : key, "company" : "coinone"} ,coin, upsert = True)
-    
+    '''
 #------------------------------------------------------------------------------------------------ bittrex
 
 bittrex = get_coin("https://bittrex.com/api/v1.1/public/getmarkets")
