@@ -87,12 +87,6 @@ var Coin = mongoose.model('coins', CoinSchema);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-
-//Load Modules
-require('./routes/auth.js')(app, User, randomString);
-require('./routes/coin.js')(app, User, Coin, randomString);
-require('./routes/comment.js')(app, User, Text, randomString, Coin);
-
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -103,6 +97,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+require('./routes/auth.js')(app, User, randomString);
+require('./routes/coin.js')(app, User, Coin, randomString);
+require('./routes/comment.js')(app, User, Text, randomString, Coin);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

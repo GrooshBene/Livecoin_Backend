@@ -151,9 +151,9 @@ function init(app, User, randomString){
     app.post('/auth/local/register', function(req, res){
         user = new User({
             _id : randomString.generate(13),
-            email : req.param('email'),
-            password : req.param('password'),
-            nickname : req.param('nickname'),
+            email : req.body.email,
+            password : req.body.password,
+            nickname : req.body.nickname,
             alertType : 0,
             alertSound : "Basic",
             refreshType : 0,
