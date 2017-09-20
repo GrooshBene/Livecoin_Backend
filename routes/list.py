@@ -51,7 +51,7 @@ for key, value in kraken['result'].iteritems():
         }
     collection.update({"name" : key, "company" : "kraken"}, coin, upsert = True)
     time.sleep(1)
-'''
+
 #-------------------------------------------------------------------------------------------- gemini
 gemini = get_coin("https://api.gemini.com/v1/symbols")
 for value in gemini:
@@ -64,11 +64,17 @@ for value in gemini:
     obj = res.json()
     current_res = requests.get("https://api.gemini.com/v1/auction/" + value)
     current_obj = current_res.json()
+    temp_schema = collection.find_one({"company" : "gemini", "name" : key})
+    if temp_schema is None:
+        prev_value = 0
+    elif temp_schema is not None:
+        prev_value = temp_schema['price']
 
     coin = {
         "name" : value,
         "company" : "gemini",
         "price" : current_obj['last_auction_price'],
+        "prevPrice" : prev_value,
         'volume' : "0",
         "dailyLow" : obj['ask'],
         'dailyHigh' : obj['bid'],
@@ -78,7 +84,7 @@ for value in gemini:
         "change" : "Not Supported"
         }
     collection.update({"name" : value, "company" : "gemini"}, coin, upsert = True)
-
+'''
 #--------------------------------------------------------------------------------------------- korbit
 korbit = {"ETCKRW" : "etc_krw", "BTCKRW" : "btc_krw", "XRPKRW" : "xrp_krw"}
 for key, value in korbit.iteritems():
