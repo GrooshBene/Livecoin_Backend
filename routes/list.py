@@ -275,7 +275,6 @@ for key, value in bithumb_data.iteritems():
     }
     collection.update({"name" : key, "company" : "bithumb"}, coin, upsert = True)
 
-'''
 #------------------------------------------------------------------------------------------------ coinbase
 coinbase = {"BTC" : "btc" , "ETH" : "eth", "LTC" : "ltc"}
 for key, value in coinbase.iteritems():
@@ -284,10 +283,16 @@ for key, value in coinbase.iteritems():
     obj = res.json()
     coinbase_obj = obj['data']['rates']
     for ikey, ivalue in coinbase_obj.iteritems():
+        temp_schema = collection.find_one({"company" : "kraken", "name" : key+ikey})
+        if temp_schema is None:
+            prev_value = 0
+        elif temp_schema is not None:
+            prev_value = temp_schema['price']
         coin = {
             "name" : key+ikey,
             "company" : "coinbase",
             "price" : ivalue,
+            "prevPrice" : prev_value,
             "volume" : "Not Supported",
             "dailyLow" : "Not Supported",
             "dailyHigh" : "Not Supported",
@@ -297,6 +302,7 @@ for key, value in coinbase.iteritems():
             "change" : "Not Supported"
         }
         collection.update({"name" : key+ikey, "company" : "coinbase"}, coin, upsert=True)
+
 #------------------------------------------------------------------------------------------------ bitstamp
 bitstamp = {
     "BTCUSD" : "btcusd",
@@ -316,10 +322,16 @@ for key, value in bitstamp.iteritems():
     print "bitstamp : " + value
     res = requests.get("https://www.bitstamp.net/api/v2/ticker/" + value)
     obj = res.json()
+    temp_schema = collection.find_one({"company" : "kraken", "name" : value})
+    if temp_schema is None:
+        prev_value = 0
+    elif temp_schema is not None:
+        prev_value = temp_schema['price']
     coin = {
         "name" : key,
         "company" : "bitstamp",
         "price" : obj['last'],
+        "prevPrice" : prev_value,
         "volume" : obj['volume'],
         "dailyLow" : obj['low'],
         "dailyHigh" : obj['high'],
