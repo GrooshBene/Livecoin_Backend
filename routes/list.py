@@ -30,6 +30,11 @@ for key, value in kraken['result'].iteritems():
     obj = res.json()
     current_res = requests.get("https://api.kraken.com/0/public/Spread?pair=" + value['altname'])
     current_obj = current_res.json()
+    temp_schema = collection.find_one({"company" : "kraken", "name" : key})
+    if temp_schema is None:
+        prev_value = 0
+    elif temp_schema is not None:
+        prev_value = temp_schema['price']
 
     coin = {
         "name" : key,
@@ -38,6 +43,7 @@ for key, value in kraken['result'].iteritems():
         'volume' : obj['result'][''+key]['v'][0],
         'dailyLow' : obj['result'][''+key]['l'][0],
         'dailyHigh' : obj['result'][''+key]['h'][0],
+        'prevPrice' : prev_value,
         'like' : [],
         'dislike' : [],
         'comments' : [],
@@ -45,7 +51,7 @@ for key, value in kraken['result'].iteritems():
         }
     collection.update({"name" : key, "company" : "kraken"}, coin, upsert = True)
     time.sleep(1)
-
+'''
 #-------------------------------------------------------------------------------------------- gemini
 gemini = get_coin("https://api.gemini.com/v1/symbols")
 for value in gemini:
@@ -291,6 +297,7 @@ for key, value in bitstamp.iteritems():
 #     }
 #     collection.update({"name" : key.upper(), "company" : "yunbi"}, coin, upsert=True)
     
+'''
 time.sleep(1.2)
 finish_time = time.time()
 
