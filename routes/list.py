@@ -359,7 +359,7 @@ for key, value in bitstamp.iteritems():
 #     }
 #     collection.update({"name" : key.upper(), "company" : "yunbi"}, coin, upsert=True)
     
-'''
+
 time.sleep(1.2)
 finish_time = time.time()
 
