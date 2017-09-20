@@ -220,7 +220,7 @@ for key, value in coinone.iteritems():
         "change" : "Not Supported"
         }
     collection.update({"name" : key, "company" : "coinone"} ,coin, upsert = True)
-    '''
+    
 #------------------------------------------------------------------------------------------------ bittrex
 
 bittrex = get_coin("https://bittrex.com/api/v1.1/public/getmarkets")
@@ -228,11 +228,17 @@ for obj in bittrex['result']:
     print "bittrex : " + obj['MarketName']
     res = requests.get("https://bittrex.com/api/v1.1/public/getticker?market=" + obj['MarketName'])
     market_obj = res.json()
+    temp_schema = collection.find_one({"company" : "kraken", "name" : obj['MarketName']})
+    if temp_schema is None:
+        prev_value = 0
+    elif temp_schema is not None:
+        prev_value = temp_schema['price']
 
     coin = {
         "name" : obj['MarketName'],
         "company" : "bittrex",
         "price" : market_obj['result']['Last'],
+        "prevPrice" : prev_value,
         "volume" : "",
         "dailyLow" : market_obj['result']['Bid'],
         "dailyHigh" : market_obj['result']['Ask'],
@@ -243,6 +249,7 @@ for obj in bittrex['result']:
     }
     collection.update({"name" : obj['MarketName'], "company" : "bittrex"}, coin, upsert=True)
 
+'''
 #------------------------------------------------------------------------------------------------ bithumb
 bithumb = get_coin("https://api.bithumb.com/public/ticker/all")
 bithumb_data = remove_key(bithumb['data'], "date")
