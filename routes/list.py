@@ -52,6 +52,8 @@ for value in gemini:
     if "ethbtc" in value:
         continue
     print "gemini : " + value
+    value.encode('ascii', 'ignore')
+    split_value = value[0:3]
     res = requests.get("https://api.gemini.com/v1/pubticker/" + value)
     obj = res.json()
     current_res = requests.get("https://api.gemini.com/v1/auction/" + value)
@@ -61,7 +63,7 @@ for value in gemini:
         "name" : value,
         "company" : "gemini",
         "price" : current_obj['last_auction_price'],
-        'volume' : obj['volume'],
+        'volume' : "0",
         "dailyLow" : obj['ask'],
         'dailyHigh' : obj['bid'],
         "like" : [],
@@ -272,22 +274,23 @@ for key, value in bitstamp.iteritems():
     }
     collection.update({"name" : key, "company" : "bitstamp"}, coin, upsert=True)
 #--------------------------------------------------------------------------------------------------- yunbi
-yunbi = get_coin("https://yunbi.com//api/v2/tickers.json")
-for key, value in yunbi.iteritems():
-    print "yunbi : " + key
-    coin = {
-        "name" : key.upper(),
-        "company" : "yunbi",
-        "price" : value['ticker']['last'],
-        "volume" : value['ticker']['vol'],
-        "dailyLow" : value['ticker']['low'],
-        "dailyHigh" : value['ticker']['high'],
-        "like" : [],
-        "dislike" : [],
-        "comments" : [],
-        "change" : "Not Supported"
-    }
-    collection.update({"name" : key.upper(), "company" : "yunbi"}, coin, upsert=True)
+# yunbi = get_coin("https://yunbi.com//api/v2/tickers.json")
+# for key, value in yunbi.iteritems():
+#     print "yunbi : " + key
+#     coin = {
+#         "name" : key.upper(),
+#         "company" : "yunbi",
+#         "price" : value['ticker']['last'],
+#         "volume" : value['ticker']['vol'],
+#         "dailyLow" : value['ticker']['low'],
+#         "dailyHigh" : value['ticker']['high'],
+#         "like" : [],
+#         "dislike" : [],
+#         "comments" : [],
+#         "change" : "Not Supported"
+#     }
+#     collection.update({"name" : key.upper(), "company" : "yunbi"}, coin, upsert=True)
+    
 time.sleep(1.2)
 finish_time = time.time()
 
