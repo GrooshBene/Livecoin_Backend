@@ -74,7 +74,7 @@ for value in gemini:
         "name" : value,
         "company" : "gemini",
         "price" : current_obj['last_auction_price'],
-        "prevPrice" : prev_value,
+        "prevPrice" : prev_value['price'],
         'volume' : "0",
         "dailyLow" : obj['ask'],
         'dailyHigh' : obj['bid'],
@@ -84,7 +84,7 @@ for value in gemini:
         "change" : "Not Supported"
         }
     collection.update({"name" : value, "company" : "gemini"}, coin, upsert = True)
-'''
+
 #--------------------------------------------------------------------------------------------- korbit
 korbit = {"ETCKRW" : "etc_krw", "BTCKRW" : "btc_krw", "XRPKRW" : "xrp_krw"}
 for key, value in korbit.iteritems():
@@ -93,11 +93,17 @@ for key, value in korbit.iteritems():
     obj = res.json()
     current_res = requests.get("https://api.korbit.co.kr/v1/ticker?currency_pair=" + value)
     current_obj = current_res.json()
+    temp_schema = collection.find_one({"company" : "korbit", "name" : key})
+    if temp_schema is None:
+        prev_value = 0
+    elif temp_schema is not None:
+        prev_value = temp_schema['price']
 
     coin = {
         "name" : key,
         "company" : "korbit",
         "price" : current_obj['last'],
+        "prevPrice" : prev_value['price']
         "volume" : obj['volume'],
         "dailyLow" : obj['ask'],
         "dailyHigh" : obj['bid'],
@@ -108,7 +114,7 @@ for key, value in korbit.iteritems():
         }
     collection.update({"name" : key, "company" : "korbit"}, coin, upsert = True)
 #---------------------------------------------------------------------------------------------- okcoincn
-
+'''
 okcoincn = {"BTCCNY" : "btc_cny", "LTCCNY" : "ltc_cny", "ETHCNY" : "eth_cny" , "ETCCNY" : "etc_cny", "BCCCNY" : "bcc_cny"}
 for key, value in okcoincn.iteritems():
     print "okcoincn : " + key
