@@ -74,7 +74,7 @@ for value in gemini:
         "name" : value,
         "company" : "gemini",
         "price" : current_obj['last_auction_price'],
-        "prevPrice" : prev_value['price'],
+        "prevPrice" : prev_value,
         'volume' : "0",
         "dailyLow" : obj['ask'],
         'dailyHigh' : obj['bid'],
@@ -103,7 +103,7 @@ for key, value in korbit.iteritems():
         "name" : key,
         "company" : "korbit",
         "price" : current_obj['last'],
-        "prevPrice" : prev_value['price']
+        "prevPrice" : prev_value,
         "volume" : obj['volume'],
         "dailyLow" : obj['ask'],
         "dailyHigh" : obj['bid'],
@@ -132,7 +132,7 @@ for key, value in okcoincn.iteritems():
         "name" : key,
         "company" : "okcoincn",
         "price" : obj['ticker']['last'],
-        "prevPrice" : prev_value['price'],
+        "prevPrice" : prev_value,
         "volume" : obj['ticker']['vol'],
         "dailyLow" : obj['ticker']['low'],
         "dailyHigh" : obj['ticker']['high'],
@@ -143,17 +143,23 @@ for key, value in okcoincn.iteritems():
         }
     collection.update({"name" : key, "company" : "okcoincn"}, coin, upsert = True)
 #------------------------------------------------------------------------------------------------ bitflyer
-'''
+
 bitflyer = get_coin("https://api.bitflyer.jp/v1/markets")
 for value in bitflyer:
     print "bitflyer : " + value['product_code']
     res = requests.get("https://api.bitflyer.jp/v1/ticker?product_code=" + value['product_code'])
     obj = res.json()
+    temp_schema = collection.find_one({"company" : "kraken", "name" : key})
+    if temp_schema is None:
+        prev_value = 0
+    elif temp_schema is not None:
+        prev_value = temp_schema['price']
 
     coin = {
         "name" : value['product_code'],
         "company" : "bitflyer",
         "price" : obj['ltp'],
+        "prevPrice" : prev_value,
         "volume" : obj['volume'],
         "dailyLow" : obj['best_bid'],
         "dailyHigh" : obj['best_ask'],
@@ -163,7 +169,7 @@ for value in bitflyer:
         "change" : "Not Supported"
         }
     collection.update({"name" : value, "company" : "bitflyer"}, coin, upsert = True)
-
+'''
 #----------------------------------------------------------------------------------------------- poloniex
 poloniex = get_coin("https://poloniex.com/public?command=returnTicker")
 for key, value in poloniex.iteritems():
