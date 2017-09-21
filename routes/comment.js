@@ -4,16 +4,16 @@ function init(app, User, Text, randomString, Coin){
     app.post('/comment/add', function(req, res){
         var text = new Text({
             _id : randomString.generate(13),
-            writer : req.param('user_id'),
+            writer : req.body.user_id,
             like : [],
-            content : req.param('content')
+            content : req.body.content
         });
         text.save(function(err){
             if(err){
                 console.log('/comment/add Save Error');
                 res.send(401, '/comment/add Save Error');
             }
-            Coin.findOneAndUpdate({id : mongoose.Schema.Types.ObjectId(req.param('coin_id'))}, {$push : {comments : text._id}}, function(err, result){
+            Coin.findOneAndUpdate({id : mongoose.Schema.Types.ObjectId(req.body.coin_id)}, {$push : {comments : text._id}}, function(err, result){
                 if(err){
                     console.log('/comment/add Coin Update Error');
                     res.send(401, '/comment/add Coin Update Error');
@@ -25,7 +25,7 @@ function init(app, User, Text, randomString, Coin){
     });
 
     app.post('/comment/:company/:coin', function(req, res){
-        Coin.findOne({company : req.param('company'), name : req.param('coin')}, function(err, result){
+        Coin.findOne({company : req.body.company, name : req.body.coin}, function(err, result){
             if(err){
                 console.log('/comment/:company/:coin Find DB Error');
                 res.send(401, '/comment/:company/:coin Find Error');
@@ -40,7 +40,7 @@ function init(app, User, Text, randomString, Coin){
     });
 
     app.post('/comment/:id/like', function(req, res){
-        Text.findOneAndUpdate({_id : req.param('id')}, {$push : {like : req.param('user_id')}}, function(req, res){
+        Text.findOneAndUpdate({_id : req.param('id')}, {$push : {like : req.body.user_id}}, function(req, res){
             if(err){
                 console.log('/comment/:id/like Update DB Error');
                 res.send(401, '/comment/:id/:like Update Error');
@@ -50,7 +50,7 @@ function init(app, User, Text, randomString, Coin){
     });
  
     app.post('/comment/:id/scrap', function(req, res){
-        User.findOneAndUpdate({_id : req.param('user_id')}, {$push : {scrap : req.param(id)}}, function(req,res){
+        User.findOneAndUpdate({_id : req.body.user_id}, {$push : {scrap : req.body.id}}, function(req,res){
             if(err){
                 console.log('/comment/:id/scrap Update DB Error');
                 res.send(401, '/comment/:id/scrap Update DB Error');
