@@ -109,7 +109,7 @@ function init(app, User, randomString){
 
     app.get('/auth/test', function(req, res){
          var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera) 
-            to: req.param('fcm_token'), 
+            to: req.body.fcm_token,
             priority : 'high',
             notification: {
                 title: 'Test', 
@@ -128,7 +128,7 @@ function init(app, User, randomString){
     });
 
     app.get('/auth/facebook/token', passport.authenticate('facebook-token'), function(req, res){
-        console.log("User Token : "+ req.param('access_token'));
+        console.log("User Token : "+ req.body.access_token);
         if(req.user){
             User.findOne({_id : req.user.id}, function(err, result){
                 if(err){
@@ -165,7 +165,7 @@ function init(app, User, randomString){
 			scrap : [],
             emailVeryfied : 0
         });
-        User.find({email : req.param('email')}) 
+        User.find({email : req.body.email})
 			.exec(function(err, result){
             if(err){
                 console.log('/auth/local/register DB Error');
@@ -191,12 +191,12 @@ function init(app, User, randomString){
     });
 
     app.post('/auth/local/register/mail', function(req, res){
-        User.findOne({email : req.param('email'), function(err, result) {
+        User.findOne({email : req.body.email, function(err, result) {
             if(err){
                 console.log('/auth/register/mail DB Error');
                 res.send(403, "/auth/register/mail DB Error");
             }
-            if(result.verifyingToken == req.param('token')){
+            if(result.verifyingToken == req.body.token){
                 console.log('User '+ result + " Veryfied!");
                 User.findOneAndUpdate({email : result._id}, {emailVeryfied : 1}, function(err, result){
                     if(err){
@@ -206,7 +206,7 @@ function init(app, User, randomString){
                 });
                 res.send(200, result);
             }
-            else if(result.verifyingToken != req.param('token')){
+            else if(result.verifyingToken != req.body.token){
                 console.log("User "+ result + " Veryfing Failed!");
                 res.send(404, "Unmatched token");
             }
@@ -214,8 +214,8 @@ function init(app, User, randomString){
     })
 
     app.post("/auth/local/authenticate", function(req, res){
-        console.log('Auth Key : '+ req.param('token'));
-        User.findOne({authToken : req.param('token')}, function(err, result){
+        console.log('Auth Key : '+ req.body.token);
+        User.findOne({authToken : req.body.token}, function(err, result){
             if(err){
                 console.log("/auth/authenicate failed");
                 res.send(404, "Cannnot Auth User");
@@ -226,23 +226,23 @@ function init(app, User, randomString){
     });
 
     app.post("/auth/local/login", function(req, res){
-         console.log("User Login : " + req.param('email'));
-        User.findOne({email : req.param('email')}, function (err, result) {
+         console.log("User Login : " + req.body.token);
+        User.findOne({email : req.body.email}, function (err, result) {
             console.log("DB Founded : "+ result);
             if(err){
                 console.log("/auth/local/login failed");
                 res.send(403, "/auth/local/login DB Error");
             }
             if(result) {
-                if (req.param('email') == undefined) {
+                if (req.body.email == undefined) {
                     console.log("Unvalid User Infomation");
                     res.send(401, "Unvalid User Infomation");
                 }
-                else if (req.param('email') != undefined && result.password == req.param('password')) {
+                else if (req.body.email != undefined && result.password == req.body.password) {
                     console.log("User " + result.nickname + "Logged In");
                     res.send(200, result);
                 }
-                else if (result.password != req.param('password')) {
+                else if (result.password != req.body.password) {
                     console.log("Password Error!");
                     res.send(401, "Access Denied");
                 }
