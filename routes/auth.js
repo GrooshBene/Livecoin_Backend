@@ -256,7 +256,7 @@ function init(app, User, randomString){
                 res.send(404, "Cant't Find User Data");
             }
         });
-    })
+    });
 
     app.post('/auth/logout', function(req, res){
         req.session.destroy(function (err){

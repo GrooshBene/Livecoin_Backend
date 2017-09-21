@@ -56,7 +56,7 @@ function init(app, User, Coin, randomString){
 		// console.log("Update Loop Off!");
     // }, 60000);
 	app.post('/coin/user/favorite/add', function(req, res){
-		User.findOneAndUpdate({_id : req.param('user_id')}, {$push : {favorite : mongoose.Types.ObjectId(req.param('coin_id'))}}, {new : true})
+		User.findOneAndUpdate({_id : req.body.user_id}, {$push : {favorite : mongoose.Types.ObjectId(req.body.coin_id)}}, {new : true})
 			.exec(function(err, result){
 			if(err){
 				console.log('/coin/add/user failed');
@@ -66,7 +66,7 @@ function init(app, User, Coin, randomString){
 		});
 	});
 	app.post('/coin/user/favorite', function(req, res){
-		User.findOne({_id : req.param('user_id')}).populate('favorite').exec(function(err, result){
+		User.findOne({_id : req.body.user_id}).populate('favorite').exec(function(err, result){
 			if(err){
 				console.log('/coin/user/favorite failed');
 				res.send(401, err);
@@ -75,7 +75,7 @@ function init(app, User, Coin, randomString){
 		});
 	});
     app.post('/coin/find/:companyName', function(req, res){
-        Coin.find({company : req.param('companyName')}, function(err, result){
+        Coin.find({company : req.body.companyName}, function(err, result){
             if(err){
                 console.log('/coin/find/:companyName failed');
                 res.send(401, err);
@@ -84,7 +84,7 @@ function init(app, User, Coin, randomString){
         })
     })
 	app.post('/coin/find/:companyName/:coinName', function(req, res){
-		Coin.find({company : req.param('companyName'), name : req.param('coinName')}, function(err, result){
+		Coin.find({company : req.body.companyName, name : req.body.coinName}, function(err, result){
 			if(err){
 				console.log('/coin/find/:companyName failed');
 				res.send(401, err);
@@ -94,7 +94,7 @@ function init(app, User, Coin, randomString){
 	});
     
     app.post('/coin/like/:companyName/:coinName', function(req, res){
-        Coin.findOneAndUpdate({company : req.param('companyName'), name : req.param('coinName')}, {$push : {like : req.param('user_id')}}, function(err, result){
+        Coin.findOneAndUpdate({company : req.body.companyName, name : req.body.coinName}, {$push : {like : req.body.user_id}}, function(err, result){
             if(err){
                 console.log('/coin/dislike failed');
                 res.send(401, err);
@@ -104,7 +104,7 @@ function init(app, User, Coin, randomString){
     });
     
     app.post('/coin/dislike/:companyName/:coinName', function(req, res){
-        Coin.findOneAndUpdate({company : req.param('companyName'), name : req.param('coinName')}, {$push : {like : req.param('user_id')}}, function(err, result){
+        Coin.findOneAndUpdate({company : req.body.companyName, name : req.body.coinName}, {$push : {like : req.body.user_id}}, function(err, result){
             if(err){
                 console.log("/coin/dislike failed");
                 res.send(401, result);
