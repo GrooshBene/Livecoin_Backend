@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var randomString = require('randomstring');
+var session = require('express-session');
 var schema = mongoose.Schema;
 
 var index = require('./routes/index');
@@ -94,6 +95,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+    secret : 'livecoin',
+    resave : false,
+    saveUninitialized : true
+}));
 
 app.use('/', index);
 app.use('/users', users);
