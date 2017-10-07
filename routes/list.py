@@ -36,9 +36,29 @@ for key, value in kraken['result'].iteritems():
     elif temp_schema is not None:
         prev_value = temp_schema['price']
 
+    if "USDTUSD" in key:
+        name = key[0:4]
+        currency = key[5:]
+        print name + " : " + currency
+    elif len(key) == 6:
+        name = key[0:3]
+        currency = key[3:]
+        print name + " : " + currency
+    elif len(key) == 7:
+        name = key[0:4]
+        currency = key[4:]
+        print name + " : " + currency
+    elif len(key) == 8:
+        name = key[1:4]
+        currency = key[5:]
+        print name + " : " + currency
+
+
+
     coin = {
-        "name" : key,
+        "name" : name,
         "company" : "kraken",
+        "currency" : currency
         "price" : current_obj['result']['last'],
         'volume' : obj['result'][''+key]['v'][0],
         'dailyLow' : obj['result'][''+key]['l'][0],
@@ -69,6 +89,7 @@ for value in gemini:
         prev_value = 0
     elif temp_schema is not None:
         prev_value = temp_schema['price']
+
 
     coin = {
         "name" : value,
@@ -358,8 +379,6 @@ for key, value in bitstamp.iteritems():
 #         "change" : "Not Supported"
 #     }
 #     collection.update({"name" : key.upper(), "company" : "yunbi"}, coin, upsert=True)
-    
-
 time.sleep(1.2)
 finish_time = time.time()
 
