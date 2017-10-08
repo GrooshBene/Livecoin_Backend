@@ -51,7 +51,9 @@ var TextSchema = new schema({
 
 var CoinSchema = new schema({
   _id : schema.Types.ObjectId,
-  name : String,
+    name : String,
+    currency : String,
+  key : String,
   company : String,
   price : String,
   volume : String,

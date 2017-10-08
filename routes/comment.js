@@ -25,7 +25,7 @@ function init(app, User, Text, randomString, Coin){
     });
 
     app.post('/comment/:company/:coin', function(req, res){
-        Coin.findOne({company : req.body.company, name : req.body.coin}, function(err, result){
+        Coin.findOne({company : req.body.company, key : req.body.coin}, function(err, result){
             if(err){
                 console.log('/comment/:company/:coin Find DB Error');
                 res.send(401, '/comment/:company/:coin Find Error');
@@ -60,6 +60,5 @@ function init(app, User, Text, randomString, Coin){
     });
 
     app.post('/comment/:id/report', function(req, res){
-        User.findOneAndUpdate
     });
 }
