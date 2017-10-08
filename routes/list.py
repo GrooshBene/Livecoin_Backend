@@ -59,7 +59,7 @@ for key, value in kraken['result'].iteritems():
         "key" : value['altname'],
         "name" : name,
         "company" : "kraken",
-        "currency" : currency
+        "currency" : currency,
         "price" : current_obj['result']['last'],
         'volume' : obj['result'][''+key]['v'][0],
         'dailyLow' : obj['result'][''+key]['l'][0],
