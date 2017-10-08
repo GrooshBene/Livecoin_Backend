@@ -148,35 +148,35 @@ for key, value in korbit.iteritems():
     collection.update({"key" : key, "company" : "korbit"}, coin, upsert = True)
 #---------------------------------------------------------------------------------------------- okcoincn
 
-okcoincn = {"BTCCNY" : "btc_cny", "LTCCNY" : "ltc_cny", "ETHCNY" : "eth_cny" , "ETCCNY" : "etc_cny", "BCCCNY" : "bcc_cny"}
-for key, value in okcoincn.iteritems():
-    print "okcoincn : " + key
-    res = requests.get("https://www.okcoin.cn/api/v1/ticker.do?symbol=" + value)
-    obj = res.json()
-    #current_res = requests.get("https://api.korbit.co.kr/v1/ticker?currency_pair=" + value)
-    #current_obj = requests.get("https://api.korbit.co.kr/v1/ticker?currency_pair=" + value)
+# okcoincn = {"BTCCNY" : "btc_cny", "LTCCNY" : "ltc_cny", "ETHCNY" : "eth_cny" , "ETCCNY" : "etc_cny", "BCCCNY" : "bcc_cny"}
+# for key, value in okcoincn.iteritems():
+#     print "okcoincn : " + key
+#     res = requests.get("https://www.okcoin.cn/api/v1/ticker.do?symbol=" + value)
+#     obj = res.json()
+#     #current_res = requests.get("https://api.korbit.co.kr/v1/ticker?currency_pair=" + value)
+#     #current_obj = requests.get("https://api.korbit.co.kr/v1/ticker?currency_pair=" + value)
 
-    temp_schema = collection.find_one({"company" : "okcoincn", "name" : key})
-    if temp_schema is None:
-        prev_value = 0
-    elif temp_schema is not None:
-        prev_value = temp_schema['price']
-    coin = {
-        "name" : key[0:3],
-        "currency" : key[3:],
-        "key" : key,
-        "company" : "okcoincn",
-        "price" : obj['ticker']['last'],
-        "prevPrice" : prev_value,
-        "volume" : obj['ticker']['vol'],
-        "dailyLow" : obj['ticker']['low'],
-        "dailyHigh" : obj['ticker']['high'],
-        "like" : [],
-        "dislike" : [],
-        "comments" : [],
-        "change" : "Not Supported"
-        }
-    collection.update({"key" : key, "company" : "okcoincn"}, coin, upsert = True)
+#     temp_schema = collection.find_one({"company" : "okcoincn", "name" : key})
+#     if temp_schema is None:
+#         prev_value = 0
+#     elif temp_schema is not None:
+#         prev_value = temp_schema['price']
+#     coin = {
+#         "name" : key[0:3],
+#         "currency" : key[3:],
+#         "key" : key,
+#         "company" : "okcoincn",
+#         "price" : obj['ticker']['last'],
+#         "prevPrice" : prev_value,
+#         "volume" : obj['ticker']['vol'],
+#         "dailyLow" : obj['ticker']['low'],
+#         "dailyHigh" : obj['ticker']['high'],
+#         "like" : [],
+#         "dislike" : [],
+#         "comments" : [],
+#         "change" : "Not Supported"
+#         }
+#     collection.update({"key" : key, "company" : "okcoincn"}, coin, upsert = True)
 # #------------------------------------------------------------------------------------------------ bitflyer
 
 bitflyer = get_coin("https://api.bitflyer.jp/v1/markets")
