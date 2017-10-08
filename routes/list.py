@@ -93,13 +93,18 @@ for value in gemini:
     elif temp_schema is not None:
         prev_value = temp_schema['price']
 
+    if 'last_auction_price' in current_obj.keys():
+        price = current_obj['last_auction_price']
+    elif 'last_auction_price' not in current_obj.keys():
+        price = '0'
+
 
     coin = {
         "name" : name,
         "currency" : currency,
         "key" : value,
         "company" : "gemini",
-        "price" : current_obj['last_auction_price'],
+        "price" : ,
         "prevPrice" : prev_value,
         'volume' : "0",
         "dailyLow" : obj['ask'],
