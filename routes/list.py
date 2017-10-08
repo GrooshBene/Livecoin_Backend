@@ -188,7 +188,7 @@ for value in bitflyer:
     coin = {
         "name" : value['product_code'][0:3],
         "currency" : value['product_code'][3:],
-        "key" : value['product_code']
+        "key" : value['product_code'],
         "company" : "bitflyer",
         "price" : obj['ltp'],
         "prevPrice" : prev_value,
@@ -230,7 +230,7 @@ for key, value in poloniex.iteritems():
         print name + " : " + currency
     coin = {
         "name" : name,
-        "currency" : currency
+        "currency" : currency,
         "key" : key,
         "company" : "poloniex",
         "price" : value['last'],
