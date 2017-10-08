@@ -67,6 +67,16 @@ LiveCoin Backend Server
 
     name : String
 
+        코인의 이름입니다.
+
+    currency : String
+
+        코인의 환율값입니다.
+
+    key : String
+
+        coin's AltName
+
     company : String
 
         거래소의 이름입니다.
