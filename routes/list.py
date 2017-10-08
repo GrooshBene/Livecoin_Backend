@@ -104,7 +104,7 @@ for value in gemini:
         "currency" : currency,
         "key" : value,
         "company" : "gemini",
-        "price" : ,
+        "price" : price,
         "prevPrice" : prev_value,
         'volume' : "0",
         "dailyLow" : obj['ask'],
