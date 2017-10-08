@@ -56,6 +56,7 @@ for key, value in kraken['result'].iteritems():
 
 
     coin = {
+        "key" : value['altname'],
         "name" : name,
         "company" : "kraken",
         "currency" : currency
@@ -69,7 +70,7 @@ for key, value in kraken['result'].iteritems():
         'comments' : [],
         'change' : "Not Supported"
         }
-    collection.update({"name" : key, "company" : "kraken"}, coin, upsert = True)
+    collection.update({"key" : key, "company" : "kraken"}, coin, upsert = True)
     time.sleep(1)
 
 #-------------------------------------------------------------------------------------------- gemini
@@ -80,6 +81,8 @@ for value in gemini:
     print "gemini : " + value
     value.encode('ascii', 'ignore')
     split_value = value[0:3]
+    name = value[0:3]
+    currency = value[3:]
     res = requests.get("https://api.gemini.com/v1/pubticker/" + value)
     obj = res.json()
     current_res = requests.get("https://api.gemini.com/v1/auction/" + value)
@@ -92,7 +95,9 @@ for value in gemini:
 
 
     coin = {
-        "name" : value,
+        "name" : name,
+        "currency" : currency,
+        "key" : value,
         "company" : "gemini",
         "price" : current_obj['last_auction_price'],
         "prevPrice" : prev_value,
@@ -104,7 +109,7 @@ for value in gemini:
         "comments" : [],
         "change" : "Not Supported"
         }
-    collection.update({"name" : value, "company" : "gemini"}, coin, upsert = True)
+    collection.update({"key" : value, "company" : "gemini"}, coin, upsert = True)
 
 #--------------------------------------------------------------------------------------------- korbit
 korbit = {"ETCKRW" : "etc_krw", "BTCKRW" : "btc_krw", "XRPKRW" : "xrp_krw"}
@@ -121,7 +126,9 @@ for key, value in korbit.iteritems():
         prev_value = temp_schema['price']
 
     coin = {
-        "name" : key,
+        "name" : key[0:3],
+        "currency" : key[3:],
+        "key" : key,
         "company" : "korbit",
         "price" : current_obj['last'],
         "prevPrice" : prev_value,
@@ -133,7 +140,7 @@ for key, value in korbit.iteritems():
         "comments" : [],
         "change" : "Not Supported"
         }
-    collection.update({"name" : key, "company" : "korbit"}, coin, upsert = True)
+    collection.update({"key" : key, "company" : "korbit"}, coin, upsert = True)
 #---------------------------------------------------------------------------------------------- okcoincn
 
 okcoincn = {"BTCCNY" : "btc_cny", "LTCCNY" : "ltc_cny", "ETHCNY" : "eth_cny" , "ETCCNY" : "etc_cny", "BCCCNY" : "bcc_cny"}
@@ -150,7 +157,9 @@ for key, value in okcoincn.iteritems():
     elif temp_schema is not None:
         prev_value = temp_schema['price']
     coin = {
-        "name" : key,
+        "name" : key[0:3],
+        "currency" : key[3:],
+        "key" : key,
         "company" : "okcoincn",
         "price" : obj['ticker']['last'],
         "prevPrice" : prev_value,
@@ -162,22 +171,24 @@ for key, value in okcoincn.iteritems():
         "comments" : [],
         "change" : "Not Supported"
         }
-    collection.update({"name" : key, "company" : "okcoincn"}, coin, upsert = True)
-#------------------------------------------------------------------------------------------------ bitflyer
+    collection.update({"key" : key, "company" : "okcoincn"}, coin, upsert = True)
+# #------------------------------------------------------------------------------------------------ bitflyer
 
 bitflyer = get_coin("https://api.bitflyer.jp/v1/markets")
 for value in bitflyer:
     print "bitflyer : " + value['product_code']
     res = requests.get("https://api.bitflyer.jp/v1/ticker?product_code=" + value['product_code'])
     obj = res.json()
-    temp_schema = collection.find_one({"company" : "kraken", "name" : value['product_code']})
+    temp_schema = collection.find_one({"company" : "bitflyer", "name" : value['product_code']})
     if temp_schema is None:
         prev_value = 0
     elif temp_schema is not None:
         prev_value = temp_schema['price']
 
     coin = {
-        "name" : value['product_code'],
+        "name" : value['product_code'][0:3],
+        "currency" : value['product_code'][3:],
+        "key" : value['product_code']
         "company" : "bitflyer",
         "price" : obj['ltp'],
         "prevPrice" : prev_value,
@@ -189,7 +200,7 @@ for value in bitflyer:
         "comments" : [],
         "change" : "Not Supported"
         }
-    collection.update({"name" : value, "company" : "bitflyer"}, coin, upsert = True)
+    collection.update({"key" : value['product_code'], "company" : "bitflyer"}, coin, upsert = True)
 
 #----------------------------------------------------------------------------------------------- poloniex
 poloniex = get_coin("https://poloniex.com/public?command=returnTicker")
@@ -200,8 +211,27 @@ for key, value in poloniex.iteritems():
         prev_value = 0
     elif temp_schema is not None:
         prev_value = temp_schema['price']
+
+    if "USDTUSD" in key:
+        name = key[0:4]
+        currency = key[5:]
+        print name + " : " + currency
+    elif len(key) == 6:
+        name = key[0:3]
+        currency = key[3:]
+        print name + " : " + currency
+    elif len(key) == 7:
+        name = key[0:4]
+        currency = key[4:]
+        print name + " : " + currency
+    elif len(key) == 8:
+        name = key[1:4]
+        currency = key[5:]
+        print name + " : " + currency
     coin = {
-        "name" : key,
+        "name" : name,
+        "currency" : currency
+        "key" : key,
         "company" : "poloniex",
         "price" : value['last'],
         "prevPrice" : temp_schema,
@@ -213,22 +243,24 @@ for key, value in poloniex.iteritems():
         "comments" : [],
         "change" : value['percentChange']
         }
-    collection.update({"name" : key, "company" : "poloniex"}, coin, upsert = True)
+    collection.update({"key" : key, "company" : "poloniex"}, coin, upsert = True)
     
-#----------------------------------------------------------------------------------------------- coinone
+# #----------------------------------------------------------------------------------------------- coinone
 coinone = {"BTCUSD" : "btc", "BCHUSD" : "bch", "ETHUSD" : "eth", "ETCUSD" : "etc" , "XRPUSD" : "xrp"}
 for key, value in coinone.iteritems():
     print "coinone : " + key
     res = requests.get("https://api.coinone.co.kr/ticker?currency=" + value);
     obj = res.json()
-    temp_schema = collection.find_one({"company" : "kraken", "name" : key})
+    temp_schema = collection.find_one({"company" : "coinone", "name" : key})
     if temp_schema is None:
         prev_value = 0
     elif temp_schema is not None:
         prev_value = temp_schema['price']
 
     coin = {
-        "name" : key,
+        "name" : key[0:3],
+        "currency" : key[3:],
+        "key" : key,
         "company" : "coinone",
         "price" : obj['last'],
         "prevPrice" : prev_value,
@@ -240,23 +272,25 @@ for key, value in coinone.iteritems():
         "comments" : [],
         "change" : "Not Supported"
         }
-    collection.update({"name" : key, "company" : "coinone"} ,coin, upsert = True)
+    collection.update({"key" : key, "company" : "coinone"} ,coin, upsert = True)
     
-#------------------------------------------------------------------------------------------------ bittrex
+# #------------------------------------------------------------------------------------------------ bittrex
 
 bittrex = get_coin("https://bittrex.com/api/v1.1/public/getmarkets")
 for obj in bittrex['result']:
     print "bittrex : " + obj['MarketName']
     res = requests.get("https://bittrex.com/api/v1.1/public/getticker?market=" + obj['MarketName'])
     market_obj = res.json()
-    temp_schema = collection.find_one({"company" : "kraken", "name" : obj['MarketName']})
+    temp_schema = collection.find_one({"company" : "bittrex", "name" : obj['MarketName']})
     if temp_schema is None:
         prev_value = 0
     elif temp_schema is not None:
         prev_value = temp_schema['price']
 
     coin = {
-        "name" : obj['MarketName'],
+        "name" : obj['MarketName'][0:3],
+        "currency" : obj['MarketName'][3:],
+        "key" : obj['MarketName'],
         "company" : "bittrex",
         "price" : market_obj['result']['Last'],
         "prevPrice" : prev_value,
@@ -268,21 +302,23 @@ for obj in bittrex['result']:
         "comments" : [],
         "change" : "Not Supported"
     }
-    collection.update({"name" : obj['MarketName'], "company" : "bittrex"}, coin, upsert=True)
+    collection.update({"key" : obj['MarketName'], "company" : "bittrex"}, coin, upsert=True)
 
 
-#------------------------------------------------------------------------------------------------ bithumb
+# #------------------------------------------------------------------------------------------------ bithumb
 bithumb = get_coin("https://api.bithumb.com/public/ticker/all")
 bithumb_data = remove_key(bithumb['data'], "date")
 for key, value in bithumb_data.iteritems():
     print "bithumb : " + key
-    temp_schema = collection.find_one({"company" : "kraken", "name" : key})
+    temp_schema = collection.find_one({"company" : "bithumb", "name" : key})
     if temp_schema is None:
         prev_value = 0
     elif temp_schema is not None:
         prev_value = temp_schema['price']
     coin = {
-        "name" : key,
+        "name" : key[0:3],
+        "currency" : key[3:],
+        "key" : key,
         "company" : "bithumb",
         "price" : value['average_price'],
         "prevPrice" : prev_value,
@@ -294,9 +330,9 @@ for key, value in bithumb_data.iteritems():
         "comments" : [],
         "change" : "Not Supported"
     }
-    collection.update({"name" : key, "company" : "bithumb"}, coin, upsert = True)
+    collection.update({"key" : key, "company" : "bithumb"}, coin, upsert = True)
 
-#------------------------------------------------------------------------------------------------ coinbase
+# #------------------------------------------------------------------------------------------------ coinbase
 coinbase = {"BTC" : "btc" , "ETH" : "eth", "LTC" : "ltc"}
 for key, value in coinbase.iteritems():
     print "coinbase : " + key
@@ -304,13 +340,15 @@ for key, value in coinbase.iteritems():
     obj = res.json()
     coinbase_obj = obj['data']['rates']
     for ikey, ivalue in coinbase_obj.iteritems():
-        temp_schema = collection.find_one({"company" : "kraken", "name" : key+ikey})
+        temp_schema = collection.find_one({"company" : "coinbase", "name" : key+ikey})
         if temp_schema is None:
             prev_value = 0
         elif temp_schema is not None:
             prev_value = temp_schema['price']
         coin = {
-            "name" : key+ikey,
+            "name" : key,
+            "currency" : ikey,
+            "key" : key+ikey,
             "company" : "coinbase",
             "price" : ivalue,
             "prevPrice" : prev_value,
@@ -322,9 +360,9 @@ for key, value in coinbase.iteritems():
             "comments" : [],
             "change" : "Not Supported"
         }
-        collection.update({"name" : key+ikey, "company" : "coinbase"}, coin, upsert=True)
+        collection.update({"key" : key+ikey, "company" : "coinbase"}, coin, upsert=True)
 
-#------------------------------------------------------------------------------------------------ bitstamp
+# #------------------------------------------------------------------------------------------------ bitstamp
 bitstamp = {
     "BTCUSD" : "btcusd",
     "BTCEUR" : "btceur",
@@ -349,7 +387,9 @@ for key, value in bitstamp.iteritems():
     elif temp_schema is not None:
         prev_value = temp_schema['price']
     coin = {
-        "name" : key,
+        "name" : key[0:3],
+        "currency" : key[3:],
+        "key" : key,
         "company" : "bitstamp",
         "price" : obj['last'],
         "prevPrice" : prev_value,
@@ -361,7 +401,7 @@ for key, value in bitstamp.iteritems():
         "comments" : [],
         "change" : "Not Supported"
     }
-    collection.update({"name" : key, "company" : "bitstamp"}, coin, upsert=True)
+    collection.update({"key" : key, "company" : "bitstamp"}, coin, upsert=True)
 #--------------------------------------------------------------------------------------------------- yunbi
 # yunbi = get_coin("https://yunbi.com//api/v2/tickers.json")
 # for key, value in yunbi.iteritems():
