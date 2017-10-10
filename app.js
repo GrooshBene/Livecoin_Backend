@@ -33,7 +33,8 @@ var UserSchema = new schema({
     type : String,
     ref : 'texts'
   }],
-  emailVeryfied : Number
+  emailVeryfied : Number,
+    portfolioToken : Object
 });
 
 var TextSchema = new schema({

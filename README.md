@@ -47,6 +47,15 @@ LiveCoin Backend Server
 		
 		Email 인증 여부를 나타내는 값입니다. 인증 안됨을 0으로 표기합니다.
 
+    portfolioToken : Object
+
+        포트폴리오 기능을 사용하는 거래소들의 토큰 정보가 담겨있는 오브젝트입니다.
+
+        * 예시 :
+            {
+                "kraken" : "키값",
+                "okcoincn" : "키값"
+            }
 > TextSchema
 
     _id : String

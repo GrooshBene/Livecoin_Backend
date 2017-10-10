@@ -82,7 +82,8 @@ function init(app, User, Coin, randomString){
             }
             res.send(200, result);
         })
-    })
+    });
+
 	app.post('/coin/find/:companyName/:coinName', function(req, res){
 		Coin.find({company : req.param('companyName'), key : req.param('coinName')}, function(err, result){
 			if(err){
@@ -92,6 +93,16 @@ function init(app, User, Coin, randomString){
 			res.send(200, result);
 		})
 	});
+
+    app.post('/coin/find/:companyName/:coinName', function (req, res) {
+		Coin.find({company : req.param('companyName'), key : req.param('coinName')}, function (err, result) {
+			if(err){
+				console.log("/coin/find/:companyName failed");
+				res.send(402, err);
+			}
+			res.send(200, result);
+        })
+    });
     
     app.post('/coin/like/:companyName/:coinName', function(req, res){
         Coin.findOneAndUpdate({company : req.param('companyName'), key : req.param('coinName')}, {$push : {like : req.body.user_id}}, function(err, result){
