@@ -25,12 +25,12 @@ function init(app, User, Text, randomString, Coin){
     });
 
     app.post('/comment/:company/:coin', function(req, res){
-        Coin.findOne({company : req.body.company, key : req.body.coin}, function(err, result){
+        Coin.findOne({company : req.param('company'), key : req.param('coin')}, function(err, result){
             if(err){
                 console.log('/comment/:company/:coin Find DB Error');
                 res.send(401, '/comment/:company/:coin Find Error');
                 }
-            console.log(result.comments);
+            console.log(result);
             res.send(200, result.comments);
         });
     });
@@ -50,7 +50,7 @@ function init(app, User, Text, randomString, Coin){
     });
  
     app.post('/comment/:id/scrap', function(req, res){
-        User.findOneAndUpdate({_id : req.body.user_id}, {$push : {scrap : req.body.id}}, function(req,res){
+        User.findOneAndUpdate({_id : req.body.user_id}, {$push : {scrap : req.param('id')}}, function(req,res){
             if(err){
                 console.log('/comment/:id/scrap Update DB Error');
                 res.send(401, '/comment/:id/scrap Update DB Error');
